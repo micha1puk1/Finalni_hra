@@ -3,6 +3,7 @@ using namespace std;
 
 int main() {
 
+
   int pocetpostav = 4;
   string postava[pocetpostav] = {"Revizor", "Bezdomovec", "Černý pasažér", "Ajťák"};
   int cislopostavy;
