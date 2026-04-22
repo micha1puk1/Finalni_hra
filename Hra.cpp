@@ -25,6 +25,20 @@ void ajtakInfo() {
     cout << "Popis postavy Ajtak";
 }
 
+
+void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int penize, int vagon) {
+    cout << "\n-----------------------";
+    cout <<"\nVAGÓN " << vagon << " ÚSPĚŠNĚ ZDOLÁN";
+    cout << "\n-----------------------";
+
+    cout << "\nŽivoty:       " << zivoty << "/" << zivotymax;
+    cout << "\nEnergie:      " << energie << "/" << energiemax;
+    cout << "\nPeníze:       " << penize;
+    cout << "\nJdete do dalšího vagónu(a): ";
+    string odpoved;
+    cin >> odpoved;
+}
+
 int main() {
     SetConsoleOutputCP(CP_UTF8);
 
@@ -32,6 +46,14 @@ int main() {
     string postava[pocetpostav] = {"Revizor", "Bezdomovec", "Černý pasažér", "Ajťák"};
     int cislopostavy;
     char vyberanone;
+
+    int vagon = 15;
+    int zivoty = 5;
+    int zivotymax = 5;
+    int energie = 10;
+    int energiemax = 10;
+    int penize = 100;
+
 
     cout << "Právě se nacházíte ve vlaku v posledním vagónu. \nVaše mise je se dostat do prvního vagonu. \nPotom přelézt do lokomotivy. \nZneškodnit strojvedoucího a ovládnout celý vlak.\n";
 
@@ -60,6 +82,14 @@ int main() {
 
     }while (vyberanone == 'n');
 
-    cout << "Konec";
+
+
+
+
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
+
+
+
+    cout << "\nKonec";
 
 }
