@@ -39,7 +39,7 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
     cin >> odpoved;
 }
 
-void jidelniVagon(int &zivoty, int &penize, int $energie) {
+void jidelniVagon(int &zivoty, int &penize, int &energie) {
     char vyberanone;
     int vybernakupu;
 
@@ -73,7 +73,7 @@ void jidelniVagon(int &zivoty, int &penize, int $energie) {
                     break;
                 case 3:
                     cout << "-45 peněz";
-                    cout << "MINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
+                    cout << "\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
                     //random +/- peníze
 
 
