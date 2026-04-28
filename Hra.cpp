@@ -39,6 +39,56 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
     cin >> odpoved;
 }
 
+void jidelniVagon(int &zivoty, int &penize, int $energie) {
+    char vyberanone;
+    int vybernakupu;
+
+    cout << "\n==== Jídelní vagón ====";
+    cout << "\nVítejte v jídelním voze. \nZde si můžete koupit jídlo a pití a také i jiné věci.";
+    cout << "\n\nAKTUÁLNÍ NABÍDKA";
+    cout << "\n1. Kolalokova limonáda      +1 život               65 Peněz";
+    cout << "\n2. Šumavský bochník         +3 energie             50 Peněz";
+    cout << "\n3. Výherní los              až 1 000 000 peněz     45 Peněz";
+    do {
+        cout << "\nKoupíte si něco(a/n): ";
+        cin  >> vyberanone;
+    }while ((vyberanone != 'a') && (vyberanone != 'n'));
+
+    switch (vyberanone) {
+        case 'a':
+            cout << "\nCo si koupíte(1-3): ";
+            cin >> vybernakupu;
+            switch (vybernakupu) {
+                case 1:
+                    cout << "\n-65 peněz";
+                    cout << "\nKolalokova limonáda vás vždy osvěží. \n+1 život";
+                    zivoty++;
+                    penize-=65;
+                    break;
+                case 2:
+                    cout << "-50 peněz";
+                    cout << "\nKdo by čekal že šumava bude mít takto veliké energetické výdaje. \n+3 energie";
+                    energie+= 3;
+                    penize-= 50;
+                    break;
+                case 3:
+                    cout << "-45 peněz";
+                    cout << "MINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
+                    //random +/- peníze
+
+
+            }
+
+
+    }
+
+
+}
+
+
+
+
+
 int main() {
     SetConsoleOutputCP(CP_UTF8);
 
@@ -87,9 +137,8 @@ int main() {
 
 
     statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
-
-
-
+    jidelniVagon(zivoty,penize,energie);
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
     cout << "\nKonec";
 
 }
