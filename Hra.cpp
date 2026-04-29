@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <windows.h>
 using namespace std;
 
@@ -42,13 +43,15 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
 void jidelniVagon(int &zivoty, int &penize, int &energie) {
     char vyberanone;
     int vybernakupu;
+    int symboly[3];
+    int random;
 
     cout << "\n==== Jídelní vagón ====";
     cout << "\nVítejte v jídelním voze. \nZde si můžete koupit jídlo a pití a také i jiné věci.";
     cout << "\n\nAKTUÁLNÍ NABÍDKA";
     cout << "\n1. Kolalokova limonáda      +1 život               65 Peněz";
     cout << "\n2. Šumavský bochník         +3 energie             50 Peněz";
-    cout << "\n3. Výherní los              až 1 000 000 peněz     45 Peněz";
+    cout << "\n3. Stírací los              až 1 000 000 peněz     45 Peněz";
     do {
         cout << "\nKoupíte si něco(a/n): ";
         cin  >> vyberanone;
@@ -74,7 +77,34 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
                 case 3:
                     cout << "-45 peněz";
                     cout << "\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
-                    //random +/- peníze
+                    cout << "\n\n#   #   #           20 penez";
+                    cout <<   "\n2x  *               40 penez";
+                    cout <<   "\n*   *   *           80 penez";
+                    cout <<   "\n2x  $              200 penez";
+                    cout <<   "\n$   $   $    1 000 000 penez";
+
+                    cout << "\nSetřít los?(a): ";
+                    cin >> vyberanone;
+                    cout << "\n=========\n";
+                    for (int i = 0; i < 3; i++) {
+                        random = rand() % 100;
+                        if (random <= 40) {
+                            cout << "#   ";
+                            symboly[i] = 1;
+                        } else if (random <= 80) {
+                            cout << "*   ";
+                            symboly[i] = 2;
+                        } else if (random > 80) {
+                            cout << "$   ";
+                            symboly[i] = 3;
+                        }
+                    }
+                    cout << "\n=========";
+
+                    if (symboly[0] == 1 && symboly[1] == 1 && symboly[2] == 1) {
+                        cout << "+20 peněz";
+                        penize+=20;
+                    }
 
 
             }
@@ -91,6 +121,7 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
+    srand(time(NULL));
 
     int pocetpostav = 4;
     string postava[pocetpostav] = {"Revizor", "Bezdomovec", "Černý pasažér", "Ajťák"};
