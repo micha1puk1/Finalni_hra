@@ -106,7 +106,6 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
                         penize+=20;
                     }
 
-
             }
 
 
