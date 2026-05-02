@@ -43,7 +43,7 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
 void jidelniVagon(int &zivoty, int &penize, int &energie) {
     char vyberanone;
     int vybernakupu;
-    int symboly[3];
+    int pocitadloSymboly[3] = {0,0,0};
     int random;
 
     cout << "\n==== Jídelní vagón ====";
@@ -76,34 +76,52 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
                     break;
                 case 3:
                     cout << "-45 peněz";
-                    cout << "\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
+                    cout << "\n\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
                     cout << "\n\n#   #   #           20 penez";
                     cout <<   "\n2x  *               40 penez";
                     cout <<   "\n*   *   *           80 penez";
                     cout <<   "\n2x  $              200 penez";
                     cout <<   "\n$   $   $    1 000 000 penez";
-
-                    cout << "\nSetřít los?(a): ";
+                    cout << "\n\nSetřít los?(a): ";
                     cin >> vyberanone;
                     cout << "\n=========\n";
                     for (int i = 0; i < 3; i++) {
                         random = rand() % 100;
                         if (random <= 40) {
                             cout << "#   ";
-                            symboly[i] = 1;
+                            pocitadloSymboly[0]++;
                         } else if (random <= 80) {
                             cout << "*   ";
-                            symboly[i] = 2;
+                            pocitadloSymboly[1]++;
                         } else if (random > 80) {
                             cout << "$   ";
-                            symboly[i] = 3;
+                            pocitadloSymboly[2]++;
                         }
                     }
-                    cout << "\n=========";
+                    cout << "\n=========\n";
 
-                    if (symboly[0] == 1 && symboly[1] == 1 && symboly[2] == 1) {
-                        cout << "+20 peněz";
+                    if (pocitadloSymboly[0] == 3) {
+                        cout << "\nVýhra";
+                        cout << "\n+20 peněz";
                         penize+=20;
+                    } else if (pocitadloSymboly[1] == 2) {
+                        cout << "\nVýhra";
+                        cout << "\n+40 peněz";
+                        penize+=40;
+                    } else if (pocitadloSymboly[1] == 3) {
+                        cout << "\nVýhra";
+                        cout << "\n+80 peněz";
+                        penize+=80;
+                    } else if (pocitadloSymboly[2] == 2) {
+                        cout << "\nVýhra";
+                        cout << "\n+200 peněz";
+                        penize+=200;
+                    } else if (pocitadloSymboly[2] == 3) {
+                        cout << "\nGratulujeme vyhráli jste hlavní výhru!";
+                        cout << "\n+1 000 000 peněz";
+                        penize+=1000000;
+                    } else {
+                        cout << "\nŽádná výhra, možná příště budete mít více štěstí.";
                     }
 
             }
