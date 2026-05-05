@@ -132,7 +132,100 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
 
 }
 
+void MBezdomovec(char moznost,int &zivotyM, string &MJmeno) {
+    switch (moznost) {
+        case 'i':
+            zivotyM = 10;
+            MJmeno = "Bezdomovec";
+            break;
+        case 's':
+            cout << "Souboj .....";
+            break;
+    }
 
+
+}
+
+void Monstrum1(char moznost,int &zivotyM, string &MJmeno) {
+    switch (moznost) {
+        case 'i':
+            zivotyM = 50;
+            MJmeno = "Monstrum1";
+            break;
+        case 's':
+            cout << "Souboj .....";
+            break;
+    }
+
+
+}
+
+
+
+
+
+void souboj(int &zivoty,int &energie, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
+    string MJmeno1;
+    string MJmeno2;
+    string MJmeno3;
+    int tah = 0;
+    int zivotyM1 = 0;
+    int zivotyM2 = 0;
+    int zivotyM3 = 0;
+
+    switch (monstrum1) {
+        case 1:
+            MBezdomovec('i', zivotyM1, MJmeno1);
+            break;
+        case 2:
+            Monstrum1('i', zivotyM1, MJmeno1);
+            break;
+    }
+    switch (monstrum2) {
+        case 1:
+            MBezdomovec('i', zivotyM2, MJmeno2);
+            break;
+        case 2:
+            Monstrum1('i', zivotyM2, MJmeno2);
+            break;
+    }
+    switch (monstrum3) {
+        case 1:
+            MBezdomovec('i', zivotyM3, MJmeno3);
+            break;
+        case 2:
+            Monstrum1('i', zivotyM3, MJmeno3);
+            break;
+    }
+
+    cout << "\n     Souboj"
+         << "\n----------------"
+         << "\nVy versus " << MJmeno1;
+    if (monstrum2 != 0) {
+        cout << ", " << MJmeno2;
+    }
+    if (monstrum3 != 0) {
+        cout << ", " << MJmeno3;
+    }
+
+    if (monstrum1 <= 1) {
+        cout << "\nZačínáte Vy:";
+        cout << "\nVaše životy:     "<< zivoty;
+        cout << "\nVase energie:    "<< energie;
+
+        cout << "\n\n" << MJmeno1 << "  Životy: " << zivotyM1;
+        if (monstrum2 != 0) {
+            cout << "\n" << MJmeno2 << "  Životy: " << zivotyM2;
+        }
+        if (monstrum3 != 0) {
+            cout << "\n" << MJmeno3 << "  Životy: " << zivotyM3;
+        }
+
+
+    }
+
+
+}
 
 
 
@@ -182,7 +275,7 @@ int main() {
 
 
 
-
+    souboj(zivoty, energie, 1,1,1);
 
     statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
     jidelniVagon(zivoty,penize,energie);
