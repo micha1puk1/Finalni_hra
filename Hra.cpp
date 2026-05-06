@@ -265,6 +265,8 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     srand(time(NULL));
 
+
+
     int pocetpostav = 4;
     string postava[pocetpostav] = {"Revizor", "Bezdomovec", "Černý pasažér", "Ajťák"};
     int cislopostavy;
