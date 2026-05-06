@@ -12,18 +12,47 @@ void vyberPostav() {
     cout << "\nČíslo postavy: ";
 }
 
-void revizorInfo() {
-    cout << "Popis postavy Revizor";
+void revizor(char moznost,int velikostUtoku0 = 9,int velikostUtoku1 = 5) {
+    switch (moznost) {
+        case 'i':
+            cout << "Popis postavy Revizor";
+            break;
+        case 's':
+            cout << "\n1. Úder pokutou      Utok " << velikostUtoku0 << " - " << velikostUtoku1;
+            cout << "\n2. Nedělat nic";
+            //cin výběr atd
+
+    }
 }
-void bezdomovecInfo() {
-    cout << "Popis postavy Bezdomovec";
+void bezdomovec(char moznost) {
+    switch (moznost) {
+        case 'i':
+            cout << "Popis postavy Bezdomovec";
+            break;
+    }
 }
-void cernypasazerInfo() {
-    cout << "Popis postavy Cernypasazer";
+void cernypasazer(char moznost) {
+    switch (moznost) {
+        case 'i':
+            cout << "Popis postavy Černý pasažér";
+            break;
+    }
 }
 
-void ajtakInfo() {
-    cout << "Popis postavy Ajtak";
+void ajtak(char moznost) {
+    switch (moznost) {
+        case 'i':
+            cout << "Popis postavy Ajťák";
+            break;
+    }
+}
+
+void postava(int cislopostavy, char moznost, int velikostUtoku0 = 0, int velikostUtoku1 = 0) {
+    switch (cislopostavy) {
+        case 1:
+            revizor(moznost, velikostUtoku0, velikostUtoku1);
+    }
+
 }
 
 
@@ -164,7 +193,7 @@ void Monstrum1(char moznost,int &zivotyM, string &MJmeno) {
 
 
 
-void souboj(int &zivoty,int &energie, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
+void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
     string MJmeno1;
     string MJmeno2;
     string MJmeno3;
@@ -221,6 +250,9 @@ void souboj(int &zivoty,int &energie, int monstrum1, int monstrum2 = 0, int mons
             cout << "\n" << MJmeno3 << "  Životy: " << zivotyM3;
         }
 
+        cout << "\nJste na tahu";
+        cout << "Možnosti útoku";
+        postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1);
 
     }
 
@@ -245,6 +277,7 @@ int main() {
     int energiemax = 10;
     int penize = 100;
 
+    int velikostUtoku[2];
 
     cout << "Právě se nacházíte ve vlaku v posledním vagónu. \nVaše mise je se dostat do prvního vagonu. \nPotom přelézt do lokomotivy. \nZneškodnit strojvedoucího a ovládnout celý vlak.\n";
 
@@ -259,10 +292,14 @@ int main() {
 
         cout << endl << postava[cislopostavy-1]<<endl;
         switch (cislopostavy) {
-            case 1: revizorInfo(); break;
-            case 2: bezdomovecInfo(); break;
-            case 3: cernypasazerInfo(); break;
-            case 4: ajtakInfo(); break;
+            case 1: revizor('i');
+                velikostUtoku[0] = 2;
+                velikostUtoku[1] = 6;
+                break;
+
+            case 2: bezdomovec('i'); break;
+            case 3: cernypasazer('i'); break;
+            case 4: ajtak('i'); break;
             default: cout << "ERROR";
         }
 
@@ -273,9 +310,8 @@ int main() {
 
     }while (vyberanone == 'n');
 
-
-
-    souboj(zivoty, energie, 1,1,1);
+    cout << cislopostavy;
+    souboj(cislopostavy,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 1,1,1);
 
     statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
     jidelniVagon(zivoty,penize,energie);
