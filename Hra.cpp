@@ -3,6 +3,10 @@
 #include <windows.h>
 using namespace std;
 
+int random(int min, int max) {
+    return rand() % (max - min + 1) + min;
+}
+
 void vyberPostav() {
     cout <<"\nVybete si postavu:";
     cout << "\n1. Revizor";
@@ -12,7 +16,9 @@ void vyberPostav() {
     cout << "\nČíslo postavy: ";
 }
 
-void revizor(char moznost,int velikostUtoku0 = 9,int velikostUtoku1 = 5) {
+void revizor(char moznost,int velikostUtoku0,int velikostUtoku1, int &uderP) {
+    int vyber;
+
     switch (moznost) {
         case 'i':
             cout << "Popis postavy Revizor";
@@ -20,7 +26,15 @@ void revizor(char moznost,int velikostUtoku0 = 9,int velikostUtoku1 = 5) {
         case 's':
             cout << "\n1. Úder pokutou      Utok " << velikostUtoku0 << " - " << velikostUtoku1;
             cout << "\n2. Nedělat nic";
-            //cin výběr atd
+            cout << "\nVyberte akci(1-2): ";
+            cin >> vyber;
+            switch (vyber) {
+                case 1:
+                    uderP = random(velikostUtoku0,velikostUtoku1);
+                    break;
+
+            }
+
 
     }
 }
@@ -47,12 +61,14 @@ void ajtak(char moznost) {
     }
 }
 
-void postava(int cislopostavy, char moznost, int velikostUtoku0 = 0, int velikostUtoku1 = 0) {
+void postava(int cislopostavy, char moznost, int velikostUtoku0, int velikostUtoku1, int &uder) {
+    int uderP = 0;
     switch (cislopostavy) {
         case 1:
-            revizor(moznost, velikostUtoku0, velikostUtoku1);
+            revizor(moznost, velikostUtoku0, velikostUtoku1, uderP);
     }
 
+    uder = uderP;
 }
 
 
@@ -236,7 +252,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
     if (monstrum3 != 0) {
         cout << ", " << MJmeno3;
     }
-
+    int uder = 0;
     if (monstrum1 <= 1) {
         cout << "\nZačínáte Vy:";
         cout << "\nVaše životy:     "<< zivoty;
@@ -252,7 +268,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
 
         cout << "\nJste na tahu";
         cout << "Možnosti útoku";
-        postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1);
+        postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder);
 
     }
 
@@ -264,8 +280,6 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     srand(time(NULL));
-
-
 
     int pocetpostav = 4;
     string postava[pocetpostav] = {"Revizor", "Bezdomovec", "Černý pasažér", "Ajťák"};
@@ -280,6 +294,7 @@ int main() {
     int penize = 100;
 
     int velikostUtoku[2];
+    int uder;
 
     cout << "Právě se nacházíte ve vlaku v posledním vagónu. \nVaše mise je se dostat do prvního vagonu. \nPotom přelézt do lokomotivy. \nZneškodnit strojvedoucího a ovládnout celý vlak.\n";
 
@@ -294,7 +309,7 @@ int main() {
 
         cout << endl << postava[cislopostavy-1]<<endl;
         switch (cislopostavy) {
-            case 1: revizor('i');
+            case 1: revizor('i',0,0,uder);
                 velikostUtoku[0] = 2;
                 velikostUtoku[1] = 6;
                 break;
