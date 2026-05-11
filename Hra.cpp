@@ -184,6 +184,8 @@ void MBezdomovec(char moznost,int &zivotyM, string &MJmeno) {
             MJmeno = "Bezdomovec";
             break;
         case 's':
+
+
             cout << "Souboj .....";
             break;
     }
@@ -266,11 +268,63 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
             cout << "\n" << MJmeno3 << "  Životy: " << zivotyM3;
         }
 
+        int nakoho;
         cout << "\nJste na tahu";
+        cout << "Na koho zautočíte\n"
+             << "1. " << MJmeno1 << "\n"
+             << "2. " << MJmeno2 << "\n"
+             << "3. " << MJmeno3 << "\n"
+             << "Na koho zaútočíte(1-3): ";
+             cin >> nakoho;
         cout << "Možnosti útoku";
         postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder);
-
+        switch (nakoho) {
+            case 1:
+                zivotyM1 -= uder;
+                cout << endl << MJmeno1 << " -" << uder << "životů";
+                break;
+            case 2:
+                zivotyM2 -= uder;
+                break;
+            case 3:
+                zivotyM3 -= uder;
+                break;
+            default:
+                cout << "ERROR";
+        }
+        cout << endl << MJmeno1 << " -" << uder << " životů";
     }
+
+    // tah monster
+    cout << "\nNa tahu je " << MJmeno1;
+    switch (monstrum1) {
+        case 1:
+            MBezdomovec('s', zivotyM1, MJmeno1);
+            break;
+        case 2:
+            Monstrum1('s', zivotyM1, MJmeno1);
+            break;
+    }
+
+    cout << "\nNa tahu je " << MJmeno2;
+    switch (monstrum2) {
+        case 1:
+            MBezdomovec('s', zivotyM2, MJmeno2);
+            break;
+        case 2:
+            Monstrum1('s', zivotyM2, MJmeno2);
+            break;
+    }
+    cout << "\nNa tahu je " << MJmeno3;
+    switch (monstrum3) {
+        case 1:
+            MBezdomovec('s', zivotyM3, MJmeno3);
+            break;
+        case 2:
+            Monstrum1('s', zivotyM3, MJmeno3);
+            break;
+    }
+
 
 
 }
