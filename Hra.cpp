@@ -168,48 +168,28 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
                     } else {
                         cout << "\nŽádná výhra, možná příště budete mít více štěstí.";
                     }
-
             }
-
-
     }
-
-
 }
 
-void MBezdomovec(char moznost,int &zivotyM, string &MJmeno) {
-    switch (moznost) {
-        case 'i':
-            zivotyM = 10;
-            MJmeno = "Bezdomovec";
-            break;
-        case 's':
-
-
-            cout << "Souboj .....";
-            break;
-    }
-
-
+void MBezdomovecInfo(int &zivotyM, string &MJmeno) {
+    zivotyM = 10;
+    MJmeno = "Bezdomovec";
 }
 
-void Monstrum1(char moznost,int &zivotyM, string &MJmeno) {
-    switch (moznost) {
-        case 'i':
-            zivotyM = 50;
-            MJmeno = "Monstrum1";
-            break;
-        case 's':
-            cout << "Souboj .....";
-            break;
-    }
-
-
+void MBezdomovecSouboj(int &uder) {
+    cout << "\nZabiju tě";
+    uder = random(1,8);
+}
+void Monstrum1Info(int &zivotyM, string &MJmeno) {
+    zivotyM = 50;
+    MJmeno = "Monstrum1";
 }
 
-
-
-
+void Monstrum1Souboj(int &uder) {
+    cout << "\nZhebni!";
+    uder = random(3,6);
+}
 
 void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
     string MJmeno1;
@@ -222,13 +202,13 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
 
     switch (monstrum1) {
         case 1:
-            MBezdomovec('i', zivotyM1, MJmeno1);
+            MBezdomovecInfo(zivotyM1, MJmeno1);
             if ((monstrum2 || monstrum3) == 1) {
                 MJmeno1 += " 1";
             }
             break;
         case 2:
-            Monstrum1('i', zivotyM1, MJmeno1);
+            Monstrum1Info(zivotyM1, MJmeno1);
             if ((monstrum2 || monstrum3) == 2) {
                 MJmeno1 += " 1";
             }
@@ -236,7 +216,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
     }
     switch (monstrum2) {
         case 1:
-            MBezdomovec('i', zivotyM2, MJmeno2);
+            MBezdomovecInfo(zivotyM2, MJmeno2);
             if (monstrum1 == 1) {
                 MJmeno2 += " 2";
             } else if (monstrum3 == 1) {
@@ -244,7 +224,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
             }
             break;
         case 2:
-            Monstrum1('i', zivotyM2, MJmeno2);
+            Monstrum1Info(zivotyM2, MJmeno2);
             if (monstrum1 == 2) {
                 MJmeno2 += " 2";
             } else if (monstrum3 == 2) {
@@ -254,7 +234,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
     }
     switch (monstrum3) {
         case 1:
-            MBezdomovec('i', zivotyM3, MJmeno3);
+            MBezdomovecInfo(zivotyM3, MJmeno3);
             if ((monstrum1 && monstrum2) == 1) {
                 MJmeno3 += " 3";
             } else if (monstrum2 == 1) {
@@ -262,7 +242,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
             }
             break;
         case 2:
-            Monstrum1('i', zivotyM3, MJmeno3);
+            Monstrum1Info(zivotyM3, MJmeno3);
             if ((monstrum1 && monstrum2) == 2) {
                 MJmeno3 += " 3";
             } else if (monstrum2 == 2) {
@@ -280,84 +260,131 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
     if (monstrum3 != 0) {
         cout << ", " << MJmeno3;
     }
+
+    cout << "\n\n" << MJmeno1 << "  Životy: " << zivotyM1;
+    if (monstrum2 != 0) {
+        cout << "\n" << MJmeno2 << "  Životy: " << zivotyM2;
+    }
+    if (monstrum3 != 0) {
+        cout << "\n" << MJmeno3 << "  Životy: " << zivotyM3;
+    }
+
     int uder = 0;
-    if (monstrum1 <= 1) {
-        cout << "\nZačínáte Vy:";
-        cout << "\nVaše životy:     "<< zivoty;
-        cout << "\nVase energie:    "<< energie;
 
-        cout << "\n\n" << MJmeno1 << "  Životy: " << zivotyM1;
-        if (monstrum2 != 0) {
-            cout << "\n" << MJmeno2 << "  Životy: " << zivotyM2;
+    while (zivoty > 0 && (zivotyM1 > 0 || zivotyM2 > 0 || zivotyM3 > 0)) {
+        if (monstrum1 <= 1) {
+            cout << "\nHrajete Vy:";
+            cout << "\nVaše životy:     "<< zivoty;
+            cout << "\nVaše energie:    "<< energie;
+
+            int nakoho;
+            cout << "\nJste na tahu";
+            cout << "\nNa koho zautočíte\n";
+            if (zivotyM1 > 0) {
+                cout << "1. " << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
+            } else {
+                cout << "1. " << MJmeno1 << "   Mrtvý\n";
+            }
+            if (zivotyM2 > 0) {
+                cout << "2. " << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
+            } else if (monstrum2 != 0) {
+                cout << "2. " << MJmeno2 << "   Mrtvý\n";
+            }
+            if (zivotyM3 > 0) {
+                cout << "3. " << MJmeno3 << "   Životy: " << zivotyM3 << "\n";
+            } else if (monstrum3 != 0) {
+                cout << "3. " << MJmeno3 << "   Mrtvý\n";
+            }
+
+            cout << "Na koho zaútočíte(číslo): ";
+            cin >> nakoho;
+            cout << "Možnosti útoku";
+            postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder);
+            switch (nakoho) {
+                case 1:
+                    zivotyM1 -= uder;
+                    cout << endl << MJmeno1 << " -" << uder << " životů";
+                    break;
+                case 2:
+                    zivotyM2 -= uder;
+                    cout << endl << MJmeno2 << " -" << uder << " životů";
+                    break;
+                case 3:
+                    zivotyM3 -= uder;
+                    cout << endl << MJmeno3 << " -" << uder << " životů";
+                    break;
+                default:
+                    cout << "ERROR";
+            }
+
         }
-        if (monstrum3 != 0) {
-            cout << "\n" << MJmeno3 << "  Životy: " << zivotyM3;
+
+        // tah monster
+        if (zivotyM1 > 0) {
+            cout << "\nNa tahu je " << MJmeno1;
+            switch (monstrum1) {
+                case 1:
+                    MBezdomovecSouboj(uder);
+                    break;
+                case 2:
+                    Monstrum1Souboj(uder);
+                    break;
+            }
+            zivoty -= uder;
+            cout << "\n- " << uder << " životů";
+            uder = 0;
         }
 
-        int nakoho;
-        cout << "\nJste na tahu";
-        cout << "Na koho zautočíte\n"
-             << "1. " << MJmeno1 << "\n"
-             << "2. " << MJmeno2 << "\n"
-             << "3. " << MJmeno3 << "\n"
-             << "Na koho zaútočíte(1-3): ";
-             cin >> nakoho;
-        cout << "Možnosti útoku";
-        postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder);
-        switch (nakoho) {
-            case 1:
-                zivotyM1 -= uder;
-                cout << endl << MJmeno1 << " -" << uder << " životů";
-                break;
-            case 2:
-                zivotyM2 -= uder;
-                cout << endl << MJmeno2 << " -" << uder << " životů";
-                break;
-            case 3:
-                zivotyM3 -= uder;
-                cout << endl << MJmeno3 << " -" << uder << " životů";
-                break;
-            default:
-                cout << "ERROR";
+        if (zivotyM2 > 0) {
+            cout << "\nNa tahu je " << MJmeno2;
+            switch (monstrum2) {
+                case 1:
+                    MBezdomovecSouboj(uder);
+                    break;
+                case 2:
+                    Monstrum1Souboj(uder);
+                    break;
+            }
+            zivoty -= uder;
+            cout << "\n- " << uder << " životů";
+            uder = 0;
         }
 
+        if (zivotyM3 > 0) {
+            cout << "\nNa tahu je " << MJmeno3;
+            switch (monstrum3) {
+                case 1:
+                    MBezdomovecSouboj(uder);
+                    break;
+                case 2:
+                    Monstrum1Souboj(uder);
+                    break;
+            }
+            zivoty -= uder;
+            cout << "\n- " << uder << " životů";
+            uder = 0;
+        }
     }
-
-    // tah monster
-    cout << "\nNa tahu je " << MJmeno1;
-    switch (monstrum1) {
-        case 1:
-            MBezdomovec('s', zivotyM1, MJmeno1);
-            break;
-        case 2:
-            Monstrum1('s', zivotyM1, MJmeno1);
-            break;
+    if (zivoty > 0) {
+        if (zivotyM1 > 0) {
+            cout <<endl << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
+        } else {
+            cout << MJmeno1 << "   Mrtvý\n";
+        }
+        if (zivotyM2 > 0) {
+            cout << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
+        } else if (monstrum2 != 0) {
+            cout << MJmeno2 << "   Mrtvý\n";
+        }
+        if (zivotyM3 > 0) {
+            cout << MJmeno3 << "   Životy: " << zivotyM3 << "\n";
+        } else if (monstrum3 != 0) {
+            cout << MJmeno3 << "   Mrtvý\n";
+        }
+        cout << "\nTento souboj jsi vyhrál!";
     }
-
-    cout << "\nNa tahu je " << MJmeno2;
-    switch (monstrum2) {
-        case 1:
-            MBezdomovec('s', zivotyM2, MJmeno2);
-            break;
-        case 2:
-            Monstrum1('s', zivotyM2, MJmeno2);
-            break;
-    }
-    cout << "\nNa tahu je " << MJmeno3;
-    switch (monstrum3) {
-        case 1:
-            MBezdomovec('s', zivotyM3, MJmeno3);
-            break;
-        case 2:
-            Monstrum1('s', zivotyM3, MJmeno3);
-            break;
-    }
-
-
 
 }
-
-
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
@@ -369,8 +396,8 @@ int main() {
     char vyberanone;
 
     int vagon = 15;
-    int zivoty = 5;
-    int zivotymax = 5;
+    int zivoty = 200;
+    int zivotymax = 20;
     int energie = 10;
     int energiemax = 10;
     int penize = 100;
@@ -395,7 +422,6 @@ int main() {
                 velikostUtoku[0] = 2;
                 velikostUtoku[1] = 6;
                 break;
-
             case 2: bezdomovec('i'); break;
             case 3: cernypasazer('i'); break;
             case 4: ajtak('i'); break;
