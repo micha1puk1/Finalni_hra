@@ -223,25 +223,51 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
     switch (monstrum1) {
         case 1:
             MBezdomovec('i', zivotyM1, MJmeno1);
+            if ((monstrum2 || monstrum3) == 1) {
+                MJmeno1 += " 1";
+            }
             break;
         case 2:
             Monstrum1('i', zivotyM1, MJmeno1);
+            if ((monstrum2 || monstrum3) == 2) {
+                MJmeno1 += " 1";
+            }
             break;
     }
     switch (monstrum2) {
         case 1:
             MBezdomovec('i', zivotyM2, MJmeno2);
+            if (monstrum1 == 1) {
+                MJmeno2 += " 2";
+            } else if (monstrum3 == 1) {
+                MJmeno2 += " 1";
+            }
             break;
         case 2:
             Monstrum1('i', zivotyM2, MJmeno2);
+            if (monstrum1 == 2) {
+                MJmeno2 += " 2";
+            } else if (monstrum3 == 2) {
+                MJmeno2 += " 1";
+            }
             break;
     }
     switch (monstrum3) {
         case 1:
             MBezdomovec('i', zivotyM3, MJmeno3);
+            if ((monstrum1 && monstrum2) == 1) {
+                MJmeno3 += " 3";
+            } else if (monstrum2 == 1) {
+                MJmeno3 += " 2";
+            }
             break;
         case 2:
             Monstrum1('i', zivotyM3, MJmeno3);
+            if ((monstrum1 && monstrum2) == 2) {
+                MJmeno3 += " 3";
+            } else if (monstrum2 == 2) {
+                MJmeno3 += " 2";
+            }
             break;
     }
 
@@ -281,18 +307,20 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
         switch (nakoho) {
             case 1:
                 zivotyM1 -= uder;
-                cout << endl << MJmeno1 << " -" << uder << "životů";
+                cout << endl << MJmeno1 << " -" << uder << " životů";
                 break;
             case 2:
                 zivotyM2 -= uder;
+                cout << endl << MJmeno2 << " -" << uder << " životů";
                 break;
             case 3:
                 zivotyM3 -= uder;
+                cout << endl << MJmeno3 << " -" << uder << " životů";
                 break;
             default:
                 cout << "ERROR";
         }
-        cout << endl << MJmeno1 << " -" << uder << " životů";
+
     }
 
     // tah monster
