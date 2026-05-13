@@ -369,7 +369,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
         if (zivotyM1 > 0) {
             cout <<endl << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
         } else {
-            cout << MJmeno1 << "   Mrtvý\n";
+            cout << endl << MJmeno1 << "   Mrtvý\n";
         }
         if (zivotyM2 > 0) {
             cout << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
@@ -382,6 +382,8 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
             cout << MJmeno3 << "   Mrtvý\n";
         }
         cout << "\nTento souboj jsi vyhrál!";
+    } else {
+        cout << "Tento souboj se ti nepodařil, nepřítel byl silnější než ty.";
     }
 
 }
@@ -436,11 +438,13 @@ int main() {
     }while (vyberanone == 'n');
 
     cout << cislopostavy;
-    souboj(cislopostavy,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 1,1,1);
+    souboj(cislopostavy,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 1,2,0);
 
-    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
-    jidelniVagon(zivoty,penize,energie);
-    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
+    if (zivoty > 0) {
+        statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
+        jidelniVagon(zivoty,penize,energie);
+        statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
+    }
     cout << "\nKonec";
 
 }
