@@ -62,7 +62,6 @@ void postava(int cislopostavy, char moznost, int velikostUtoku0, int velikostUto
     uder = uderP;
 }
 
-
 void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int penize, int vagon) {
     cout << "\n-----------------------";
     cout <<"\nVAGÓN " << vagon << " ÚSPĚŠNĚ ZDOLÁN";
