@@ -16,14 +16,13 @@ void vyberPostav() {
     cout << "\nČíslo postavy: ";
 }
 
-void revizor(char moznost,int velikostUtoku0,int velikostUtoku1, int &uderP) {
+void revizorInfo() {
+    cout << "Popis postavy Revizor";
+}
+void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP) {
     int vyber;
 
-    switch (moznost) {
-        case 'i':
-            cout << "Popis postavy Revizor";
-            break;
-        case 's':
+
             cout << "\n1. Úder pokutou      Utok " << velikostUtoku0 << " - " << velikostUtoku1;
             cout << "\n2. Nedělat nic";
             cout << "\nVyberte akci(1-2): ";
@@ -34,38 +33,30 @@ void revizor(char moznost,int velikostUtoku0,int velikostUtoku1, int &uderP) {
                     break;
 
             }
-
-
-    }
 }
-void bezdomovec(char moznost) {
-    switch (moznost) {
-        case 'i':
-            cout << "Popis postavy Bezdomovec";
-            break;
-    }
+void bezdomovecInfo() {
+    cout << "Popis postavy Bezdomovec";
 }
-void cernypasazer(char moznost) {
-    switch (moznost) {
-        case 'i':
-            cout << "Popis postavy Černý pasažér";
-            break;
-    }
-}
+void bezdomovecSouboj() {
 
-void ajtak(char moznost) {
-    switch (moznost) {
-        case 'i':
-            cout << "Popis postavy Ajťák";
-            break;
-    }
 }
+void cernypasazerInfo() {
+    cout << "Popis postavy Černý pasažér";
+}
+void cernypasazerSouboj() {
 
+}
+void ajtakInfo() {
+    cout << "Popis postavy Ajťák";
+}
+void ajtakSouboj() {
+
+}
 void postava(int cislopostavy, char moznost, int velikostUtoku0, int velikostUtoku1, int &uder) {
     int uderP = 0;
     switch (cislopostavy) {
         case 1:
-            revizor(moznost, velikostUtoku0, velikostUtoku1, uderP);
+            revizorSouboj(velikostUtoku0, velikostUtoku1, uderP);
     }
 
     uder = uderP;
@@ -420,13 +411,13 @@ int main() {
 
         cout << endl << postava[cislopostavy-1]<<endl;
         switch (cislopostavy) {
-            case 1: revizor('i',0,0,uder);
+            case 1: revizorSouboj(0,0,uder);
                 velikostUtoku[0] = 2;
                 velikostUtoku[1] = 6;
                 break;
-            case 2: bezdomovec('i'); break;
-            case 3: cernypasazer('i'); break;
-            case 4: ajtak('i'); break;
+            case 2: bezdomovecInfo(); break;
+            case 3: cernypasazerInfo(); break;
+            case 4: ajtakInfo(); break;
             default: cout << "ERROR";
         }
 
