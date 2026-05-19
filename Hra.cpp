@@ -19,7 +19,7 @@ void vyberPostav() {
 void revizorInfo() {
     cout << "Popis postavy Revizor";
 }
-void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP) {
+void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &energie) {
     int vyber;
 
             cout << "\n   MMOŽNOST                                      CENA         ÚDER";
@@ -34,9 +34,9 @@ void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP) {
                     break;
                 case 2:
                     uderP = velikostUtoku1 -1;
+                    energie-= 5;
                     break;
                 case 3:
-
                     break;
 
             }
@@ -59,17 +59,18 @@ void ajtakInfo() {
 void ajtakSouboj() {
 
 }
-void postava(int cislopostavy, char moznost, int velikostUtoku0, int velikostUtoku1, int &uder) {
+void postava(int cislopostavy, char moznost, int velikostUtoku0, int velikostUtoku1, int &uder,int &energie) {
     int uderP = 0;
     switch (cislopostavy) {
         case 1:
-            revizorSouboj(velikostUtoku0, velikostUtoku1, uderP);
+            revizorSouboj(velikostUtoku0, velikostUtoku1, uderP, energie);
     }
 
     uder = uderP;
 }
 
 void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int penize, int vagon) {
+
     cout << "\n-----------------------";
     cout <<"\nVAGÓN " << vagon << " ÚSPĚŠNĚ ZDOLÁN";
     cout << "\n-----------------------";
@@ -88,85 +89,106 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
     int pocitadloSymboly[3] = {0,0,0};
     int random;
 
-    cout << "\n==== Jídelní vagón ====";
-    cout << "\nVítejte v jídelním voze. \nZde si můžete koupit jídlo a pití a také i jiné věci.";
-    cout << "\n\nAKTUÁLNÍ NABÍDKA";
-    cout << "\n1. Kolalokova limonáda      +1 život               65 Peněz";
-    cout << "\n2. Šumavský bochník         +3 energie             50 Peněz";
-    cout << "\n3. Stírací los              až 1 000 000 peněz     45 Peněz";
+
+        cout << "\n==== Jídelní vagón ====";
+        cout << "\nVítejte v jídelním voze. \nZde si můžete koupit jídlo a pití a také i jiné věci.";
     do {
-        cout << "\nKoupíte si něco(a/n): ";
-        cin  >> vyberanone;
-    }while ((vyberanone != 'a') && (vyberanone != 'n'));
+        cout << "\nVaše peníze: " << penize;
+        cout << "\n\nAKTUÁLNÍ NABÍDKA";
+        cout << "\n1. Kolalokova limonáda      +1 život               65 Peněz";
+        cout << "\n2. Šumavský bochník         +3 energie             50 Peněz";
+        cout << "\n3. Stírací los              až 1 000 000 peněz     45 Peněz";
+        do {
+            cout << "\nKoupíte si něco(a/n): ";
+            cin  >> vyberanone;
+        }while ((vyberanone != 'a') && (vyberanone != 'n'));
 
-    switch (vyberanone) {
-        case 'a':
-            cout << "\nCo si koupíte(1-3): ";
-            cin >> vybernakupu;
-            switch (vybernakupu) {
-                case 1:
-                    cout << "\n-65 peněz";
-                    cout << "\nKolalokova limonáda vás vždy osvěží. \n+1 život";
-                    zivoty++;
-                    penize-=65;
-                    break;
-                case 2:
-                    cout << "-50 peněz";
-                    cout << "\nKdo by čekal že šumava bude mít takto veliké energetické výdaje. \n+3 energie";
-                    energie+= 3;
-                    penize-= 50;
-                    break;
-                case 3:
-                    cout << "-45 peněz";
-                    cout << "\n\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
-                    cout << "\n\n#   #   #           20 penez";
-                    cout <<   "\n2x  *               40 penez";
-                    cout <<   "\n*   *   *           80 penez";
-                    cout <<   "\n2x  $              200 penez";
-                    cout <<   "\n$   $   $    1 000 000 penez";
-                    cout << "\n\nSetřít los?(a): ";
-                    cin >> vyberanone;
-                    cout << "\n=========\n";
-                    for (int i = 0; i < 3; i++) {
-                        random = rand() % 100;
-                        if (random <= 40) {
-                            cout << "#   ";
-                            pocitadloSymboly[0]++;
-                        } else if (random <= 80) {
-                            cout << "*   ";
-                            pocitadloSymboly[1]++;
-                        } else if (random > 80) {
-                            cout << "$   ";
-                            pocitadloSymboly[2]++;
+        switch (vyberanone) {
+            case 'a':
+                cout << "\nCo si koupíte(1-3): ";
+                cin >> vybernakupu;
+                switch (vybernakupu) {
+                    case 1:
+                        if (penize >= 65) {
+                            cout << "\n-65 peněz";
+                            cout << "\nKolalokova limonáda vás vždy osvěží. \n+1 život";
+                            zivoty++;
+                            penize-=65;
+                        } else {
+                            cout << "\nMate nedostatek peněz";
                         }
-                    }
-                    cout << "\n=========\n";
 
-                    if (pocitadloSymboly[0] == 3) {
-                        cout << "\nVýhra";
-                        cout << "\n+20 peněz";
-                        penize+=20;
-                    } else if (pocitadloSymboly[1] == 2) {
-                        cout << "\nVýhra";
-                        cout << "\n+40 peněz";
-                        penize+=40;
-                    } else if (pocitadloSymboly[1] == 3) {
-                        cout << "\nVýhra";
-                        cout << "\n+80 peněz";
-                        penize+=80;
-                    } else if (pocitadloSymboly[2] == 2) {
-                        cout << "\nVýhra";
-                        cout << "\n+200 peněz";
-                        penize+=200;
-                    } else if (pocitadloSymboly[2] == 3) {
-                        cout << "\nGratulujeme vyhráli jste hlavní výhru!";
-                        cout << "\n+1 000 000 peněz";
-                        penize+=1000000;
-                    } else {
-                        cout << "\nŽádná výhra, možná příště budete mít více štěstí.";
-                    }
-            }
-    }
+                        break;
+                    case 2:
+                        if (penize >= 50) {
+                            cout << "-50 peněz";
+                            cout << "\nKdo by čekal že šumava bude mít takto veliké energetické výdaje. \n+3 energie";
+                            energie+= 3;
+                            penize-= 50;
+                        } else {
+                            cout << "\nMate nedostatek peněz";
+                        }
+
+
+                        break;
+                    case 3:
+                        if (penize >= 45) {
+                            cout << "-45 peněz";
+                            cout << "\n\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
+                            cout << "\n\n#   #   #           20 penez";
+                            cout <<   "\n2x  *               40 penez";
+                            cout <<   "\n*   *   *           80 penez";
+                            cout <<   "\n2x  $              200 penez";
+                            cout <<   "\n$   $   $    1 000 000 penez";
+                            cout << "\n\nSetřít los?(a): ";
+                            cin >> vyberanone;
+                            cout << "\n=========\n";
+                            for (int i = 0; i < 3; i++) {
+                                random = rand() % 100;
+                                if (random <= 40) {
+                                    cout << "#   ";
+                                    pocitadloSymboly[0]++;
+                                } else if (random <= 80) {
+                                    cout << "*   ";
+                                    pocitadloSymboly[1]++;
+                                } else if (random > 80) {
+                                    cout << "$   ";
+                                    pocitadloSymboly[2]++;
+                                }
+                            }
+                            cout << "\n=========\n";
+
+                            if (pocitadloSymboly[0] == 3) {
+                                cout << "\nVýhra";
+                                cout << "\n+20 peněz";
+                                penize+=20;
+                            } else if (pocitadloSymboly[1] == 2) {
+                                cout << "\nVýhra";
+                                cout << "\n+40 peněz";
+                                penize+=40;
+                            } else if (pocitadloSymboly[1] == 3) {
+                                cout << "\nVýhra";
+                                cout << "\n+80 peněz";
+                                penize+=80;
+                            } else if (pocitadloSymboly[2] == 2) {
+                                cout << "\nVýhra";
+                                cout << "\n+200 peněz";
+                                penize+=200;
+                            } else if (pocitadloSymboly[2] == 3) {
+                                cout << "\nGratulujeme vyhráli jste hlavní výhru!";
+                                cout << "\n+1 000 000 peněz";
+                                penize+=1000000;
+                            } else {
+                                cout << "\nŽádná výhra, možná příště budete mít více štěstí.";
+                            }
+                        } else {
+                            cout << "\nMate nedostatek peněz";
+                        }
+
+                }
+                cout << "\nChcete ještě nakoupit(a/n): "; cin >> vyberanone;
+        }
+    }while (vyberanone == 'a');
 }
 
 void MBezdomovecInfo(int &zivotyM, string &MJmeno) {
@@ -296,7 +318,7 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
             cout << "Na koho zaútočíte(číslo): ";
             cin >> nakoho;
             cout << "Možnosti útoku";
-            postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder);
+            postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder, energie);
             switch (nakoho) {
                 case 1:
                     zivotyM1 -= uder;
@@ -435,6 +457,7 @@ int main() {
     }while (vyberanone == 'n');
 
     cout << cislopostavy;
+    jidelniVagon(zivoty,penize,energie);
     souboj(cislopostavy,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 1,2,0);
 
     if (zivoty > 0) {
