@@ -22,14 +22,21 @@ void revizorInfo() {
 void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP) {
     int vyber;
 
-
-            cout << "\n1. Úder pokutou      Utok " << velikostUtoku0 << " - " << velikostUtoku1;
-            cout << "\n2. Nedělat nic";
-            cout << "\nVyberte akci(1-2): ";
+            cout << "\n   MMOŽNOST                                      CENA         ÚDER";
+            cout << "\n1. Úder                                                       " << velikostUtoku0 << " - " << velikostUtoku1;
+            cout << "\n2. Udělit pokutu za nevhodné chování ve voze     5 Energie    " << velikostUtoku1 - 1;
+            cout << "\n3. Nedělat nic";
+            cout << "\nVyberte akci(1-3): ";
             cin >> vyber;
             switch (vyber) {
                 case 1:
                     uderP = random(velikostUtoku0,velikostUtoku1);
+                    break;
+                case 2:
+                    uderP = velikostUtoku1 -1;
+                    break;
+                case 3:
+
                     break;
 
             }
@@ -410,7 +417,7 @@ int main() {
 
         cout << endl << postava[cislopostavy-1]<<endl;
         switch (cislopostavy) {
-            case 1: revizorSouboj(0,0,uder);
+            case 1: revizorInfo();
                 velikostUtoku[0] = 2;
                 velikostUtoku[1] = 6;
                 break;
