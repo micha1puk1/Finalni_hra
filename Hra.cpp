@@ -339,6 +339,7 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
             cout << "\nVaše energie:    "<< energie;
             cout << "\nVaše peníze:     "<< penize;
 
+
             int nakoho;
             cout << "\nJste na tahu";
             cout << "\nNa koho zautočíte\n";
