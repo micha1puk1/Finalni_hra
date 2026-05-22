@@ -135,6 +135,9 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax) {
                         break;
                     case 3:
                         if (penize >= 45) {
+                            for (int i = 0; i < 3; i++) {
+                                pocitadloSymboly[i] = 0;
+                            }
                             cout << "-45 peněz";
                             cout << "\n\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
                             cout << "\n\n#   #   #           20 penez";
@@ -200,19 +203,37 @@ void MBezdomovecInfo(int &zivotyM, string &MJmeno) {
 
 void MBezdomovecSouboj(int &uder) {
     cout << "\nZabiju tě";
-    uder = random(1,8);
+    uder = random(1,10);
 }
-void Monstrum1Info(int &zivotyM, string &MJmeno) {
-    zivotyM = 1;
-    MJmeno = "Monstrum1";
+void krysaInfo(int &zivotyM, string &MJmeno) {
+    zivotyM = 13;
+    MJmeno = "Nádražní krysa";
 }
-
-void Monstrum1Souboj(int &uder) {
+void krysaSouboj(int &uder) {
     cout << "\nZhebni!";
     uder = random(3,6);
 }
 
-void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
+void kapsarInofo(int &zivotyM, string &MJmeno) {
+    zivotyM = 8;
+    MJmeno = "Kapsář";
+}
+
+void kapsarSouboj(int &uder, int &penize) {
+    cout << "\nHele tamhle letí ledadlo.";
+    uder = random(3,5);
+    if (penize > 0) {
+        cout << "\nČmajz!";
+        int kradez = random(6,20);
+        while (kradez > penize) {
+            kradez--;
+        }
+        cout << "\n-" << kradez << " peněz";
+        penize -= kradez;
+    }
+}
+
+void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
     string MJmeno1;
     string MJmeno2;
     string MJmeno3;
@@ -221,16 +242,31 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
     int zivotyM2 = 0;
     int zivotyM3 = 0;
 
+    int pocetB = 0;
+    int pocetK = 0;
+    int pocetKsr = 0;
+
+    if (monstrum1 == 1) {pocetB++;}else if (monstrum1 == 2) {pocetK++;}else if (monstrum1 == 3) {pocetKsr++;}
+    if (monstrum2 == 1) {pocetB++;}else if (monstrum2 == 2) {pocetK++;}else if (monstrum2 == 3) {pocetKsr++;}
+    if (monstrum3 == 1) {pocetB++;}else if (monstrum3 == 2) {pocetK++;}else if (monstrum3 == 3) {pocetKsr++;}
+
+
     switch (monstrum1) {
         case 1:
             MBezdomovecInfo(zivotyM1, MJmeno1);
-            if ((monstrum2 || monstrum3) == 1) {
+            if (pocetB > 1) {
                 MJmeno1 += " 1";
             }
             break;
         case 2:
-            Monstrum1Info(zivotyM1, MJmeno1);
-            if ((monstrum2 || monstrum3) == 2) {
+            krysaInfo(zivotyM1, MJmeno1);
+            if (pocetK > 1) {
+                MJmeno1 += " 1";
+            }
+            break;
+        case 3:
+            kapsarInofo(zivotyM1, MJmeno1);
+            if (pocetKsr > 1) {
                 MJmeno1 += " 1";
             }
             break;
@@ -238,36 +274,40 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
     switch (monstrum2) {
         case 1:
             MBezdomovecInfo(zivotyM2, MJmeno2);
-            if (monstrum1 == 1) {
+            if (pocetB > 1) {
                 MJmeno2 += " 2";
-            } else if (monstrum3 == 1) {
-                MJmeno2 += " 1";
             }
             break;
         case 2:
-            Monstrum1Info(zivotyM2, MJmeno2);
-            if (monstrum1 == 2) {
+            krysaInfo(zivotyM2, MJmeno2);
+            if (pocetK > 1) {
                 MJmeno2 += " 2";
-            } else if (monstrum3 == 2) {
-                MJmeno2 += " 1";
+            }
+            break;
+        case 3:
+            kapsarInofo(zivotyM2, MJmeno2);
+            if (pocetKsr > 1) {
+                MJmeno2 += " 2";
             }
             break;
     }
     switch (monstrum3) {
         case 1:
             MBezdomovecInfo(zivotyM3, MJmeno3);
-            if ((monstrum1 && monstrum2) == 1) {
+            if (pocetB>2) {
                 MJmeno3 += " 3";
-            } else if (monstrum2 == 1) {
-                MJmeno3 += " 2";
             }
             break;
         case 2:
-            Monstrum1Info(zivotyM3, MJmeno3);
-            if ((monstrum1 && monstrum2) == 2) {
+            krysaInfo(zivotyM3, MJmeno3);
+            if (pocetK>2) {
                 MJmeno3 += " 3";
-            } else if (monstrum2 == 2) {
-                MJmeno3 += " 2";
+            }
+            break;
+        case 3:
+            kapsarInofo(zivotyM3, MJmeno3);
+            if (pocetKsr > 1) {
+                MJmeno3 += " 3";
             }
             break;
     }
@@ -293,10 +333,11 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
     int uder = 0;
 
     while (zivoty > 0 && (zivotyM1 > 0 || zivotyM2 > 0 || zivotyM3 > 0)) {
-        if (monstrum1 <= 1) {
+        if (monstrum1 <= 3) {
             cout << "\nHrajete Vy:";
             cout << "\nVaše životy:     "<< zivoty;
             cout << "\nVaše energie:    "<< energie;
+            cout << "\nVaše peníze:     "<< penize;
 
             int nakoho;
             cout << "\nJste na tahu";
@@ -348,7 +389,10 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
                     MBezdomovecSouboj(uder);
                     break;
                 case 2:
-                    Monstrum1Souboj(uder);
+                    krysaSouboj(uder);
+                    break;
+                case 3:
+                    kapsarSouboj(uder, penize);
                     break;
             }
             zivoty -= uder;
@@ -363,7 +407,10 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
                     MBezdomovecSouboj(uder);
                     break;
                 case 2:
-                    Monstrum1Souboj(uder);
+                    krysaSouboj(uder);
+                    break;
+                case 3:
+                    kapsarSouboj(uder, penize);
                     break;
             }
             zivoty -= uder;
@@ -378,7 +425,10 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
                     MBezdomovecSouboj(uder);
                     break;
                 case 2:
-                    Monstrum1Souboj(uder);
+                    krysaSouboj(uder);
+                    break;
+                case 3:
+                    kapsarSouboj(uder, penize);
                     break;
             }
             zivoty -= uder;
@@ -386,8 +436,11 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
             uder = 0;
         }
     }
+
+    cout << "\n---------------------------";
     if (zivoty > 0) {
-        if (monstrum1 > 0) {
+
+        if (monstrum1 != 0) {
             if (zivotyM1 > 0) {
                 cout <<endl << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
             } else {
@@ -402,22 +455,45 @@ void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikost
                 }
             }
         }
-        if (monstrum2 > 0) {
+
+        if (monstrum2 != 0) {
             if (zivotyM2 > 0) {
                 cout << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
             } else if (monstrum2 != 0) {
                 cout << MJmeno2 << "   Mrtvý\n";
+                cout << "Prohledávání... ";
+                if (random(0,1) == 1) {
+                    int nalez = random(10,36);
+                    cout << "\n+ " << nalez <<" Peněz" << endl;
+                    penize += nalez;
+                }else {
+                    cout << "\nNic jsi nenašel\n";
+                }
             }
         }
-        if (zivotyM3 > 0) {
+        if (zivotyM3 != 0) {
             if (zivotyM3 > 0) {
                 cout << MJmeno3 << "   Životy: " << zivotyM3 << "\n";
             } else if (monstrum3 != 0) {
                 cout << MJmeno3 << "   Mrtvý\n";
+                cout << "Prohledávání... ";
+                if (random(0,1) == 1) {
+                    int nalez = random(10,36);
+                    cout << "\n+ " << nalez <<" Peněz" << endl;
+                    penize += nalez;
+                }else {
+                    cout << "\nNic jsi nenašel\n";
+                }
             }
         }
 
         cout << "\nTento souboj jsi vyhrál!";
+        if (random(0,4) == 1) {
+             cout << "Tento souboj tě hodně naučil a zlepšil tvé dovednosti."
+                  << "+1 maximální život";
+            zivotymax++;
+
+        }
     } else {
         cout << "Tento souboj se ti nepodařil, nepřítel byl silnější než ty.";
     }
@@ -475,7 +551,7 @@ int main() {
 
     cout << cislopostavy;
     jidelniVagon(zivoty,penize,energie, zivotymax);
-    souboj(penize,cislopostavy ,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 1,0,0);
+    souboj(zivotymax,penize,cislopostavy ,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 3,1,2);
 
     if (zivoty > 0) {
         statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
