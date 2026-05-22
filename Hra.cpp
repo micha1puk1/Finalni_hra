@@ -83,7 +83,7 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
     cin >> odpoved;
 }
 
-void jidelniVagon(int &zivoty, int &penize, int &energie) {
+void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax) {
     char vyberanone;
     int vybernakupu;
     int pocitadloSymboly[3] = {0,0,0};
@@ -109,13 +109,15 @@ void jidelniVagon(int &zivoty, int &penize, int &energie) {
                 cin >> vybernakupu;
                 switch (vybernakupu) {
                     case 1:
-                        if (penize >= 65) {
+                        if ((penize >= 65) && (zivoty >= zivotymax)) {
                             cout << "\n-65 peněz";
                             cout << "\nKolalokova limonáda vás vždy osvěží. \n+1 život";
                             zivoty++;
                             penize-=65;
-                        } else {
+                        } else if (penize < 65) {
                             cout << "\nMate nedostatek peněz";
+                        } else if (zivoty >= zivotymax){
+                            cout <<"\nMáte už maximální počet životů";
                         }
 
                         break;
@@ -201,7 +203,7 @@ void MBezdomovecSouboj(int &uder) {
     uder = random(1,8);
 }
 void Monstrum1Info(int &zivotyM, string &MJmeno) {
-    zivotyM = 50;
+    zivotyM = 1;
     MJmeno = "Monstrum1";
 }
 
@@ -210,7 +212,7 @@ void Monstrum1Souboj(int &uder) {
     uder = random(3,6);
 }
 
-void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
+void souboj(int penize, int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
     string MJmeno1;
     string MJmeno2;
     string MJmeno3;
@@ -385,21 +387,36 @@ void souboj(int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int v
         }
     }
     if (zivoty > 0) {
-        if (zivotyM1 > 0) {
-            cout <<endl << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
-        } else {
-            cout << endl << MJmeno1 << "   Mrtvý\n";
+        if (monstrum1 > 0) {
+            if (zivotyM1 > 0) {
+                cout <<endl << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
+            } else {
+                cout << endl << MJmeno1 << "   Mrtvý\n";
+                cout << "Prohledávání... ";
+                if (random(0,1) == 1) {
+                    int nalez = random(10,36);
+                    cout << "\n+ " << nalez <<" Peněz" << endl;
+                    penize += nalez;
+                }else {
+                    cout << "\nNic jsi nenašel\n";
+                }
+            }
         }
-        if (zivotyM2 > 0) {
-            cout << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
-        } else if (monstrum2 != 0) {
-            cout << MJmeno2 << "   Mrtvý\n";
+        if (monstrum2 > 0) {
+            if (zivotyM2 > 0) {
+                cout << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
+            } else if (monstrum2 != 0) {
+                cout << MJmeno2 << "   Mrtvý\n";
+            }
         }
         if (zivotyM3 > 0) {
-            cout << MJmeno3 << "   Životy: " << zivotyM3 << "\n";
-        } else if (monstrum3 != 0) {
-            cout << MJmeno3 << "   Mrtvý\n";
+            if (zivotyM3 > 0) {
+                cout << MJmeno3 << "   Životy: " << zivotyM3 << "\n";
+            } else if (monstrum3 != 0) {
+                cout << MJmeno3 << "   Mrtvý\n";
+            }
         }
+
         cout << "\nTento souboj jsi vyhrál!";
     } else {
         cout << "Tento souboj se ti nepodařil, nepřítel byl silnější než ty.";
@@ -457,12 +474,12 @@ int main() {
     }while (vyberanone == 'n');
 
     cout << cislopostavy;
-    jidelniVagon(zivoty,penize,energie);
-    souboj(cislopostavy,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 1,2,0);
+    jidelniVagon(zivoty,penize,energie, zivotymax);
+    souboj(penize,cislopostavy ,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 1,0,0);
 
     if (zivoty > 0) {
         statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
-        jidelniVagon(zivoty,penize,energie);
+        jidelniVagon(zivoty,penize,energie, zivotymax);
         statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon);
     }
     cout << "\nKonec";
