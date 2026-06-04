@@ -1,11 +1,31 @@
 #include <iostream>
 #include <ctime>
+#include <locale>
+#include <limits>
+
+#if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
+#endif
+
+
 using namespace std;
 
 int random(int min, int max) {
     return rand() % (max - min + 1) + min;
 }
+
+bool overVstup() {
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return true;
+    }else {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return false;
+    }
+}
+
+
 
 void vyberPostav() {
     cout <<"\nVybete si postavu:";
@@ -26,16 +46,21 @@ void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &energ
             cout << "\n1. Úder                                                       " << velikostUtoku0 << " - " << velikostUtoku1;
             cout << "\n2. Udělit pokutu za nevhodné chování ve voze     5 Energie    " << velikostUtoku1 - 1;
             cout << "\n3. Nedělat nic";
+            do {
             cout << "\nVyberte akci(číslo): ";
-            cin >> vyber;
+                cin >> vyber;
+            }while ((overVstup()==true)||(vyber < 1 || vyber > 3));
+
             while ((vyber > 3 || vyber < 1) || ((vyber == 2) && (energie < 5))) {
                 if ((vyber == 2) && (energie < 5)) {
                     cout << "Máš málo energie na tuto možnost";
                 } else {
                     cout << "Špatně zadané číslo";
                 }
-                cout << "\nVyberte jinou akci(číslo): ";
-                cin >> vyber;
+                do {
+                    cout << "\nVyberte jinou akci(číslo): ";
+                    cin >> vyber;
+                }while ((overVstup()==true)||(vyber < 1 || vyber > 3));
             }
             switch (vyber) {
                 case 1:
@@ -110,12 +135,14 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax) {
         do {
             cout << "\nKoupíte si něco(a/n): ";
             cin  >> vyberanone;
-        }while ((vyberanone != 'a') && (vyberanone != 'n'));
+        }while ((overVstup() == true)||((vyberanone != 'a') && (vyberanone != 'n')));
 
         switch (vyberanone) {
             case 'a':
-                cout << "\nCo si koupíte(1-3): ";
-                cin >> vybernakupu;
+                do {
+                    cout << "\nCo si koupíte(1-3): ";
+                    cin >> vybernakupu;
+                }while ((overVstup() == true)||((vybernakupu < 1) || (vybernakupu > 3)));
                 switch (vybernakupu) {
                     case 1:
                         if ((penize >= 65) && (zivoty >= zivotymax)) {
@@ -200,7 +227,9 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax) {
                         }
 
                 }
-                cout << "\nChcete ještě nakoupit(a/n): "; cin >> vyberanone;
+                do {
+                    cout << "\nChcete ještě nakoupit(a/n): "; cin >> vyberanone;
+                }while ((overVstup() == true)||((vyberanone != 'n')&&(vyberanone != 'a')));
         }
     }while (vyberanone == 'a');
 }
@@ -368,12 +397,16 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
                 cout << "3. " << MJmeno3 << "   Mrtvý\n";
             }
 
-            cout << "Na koho zaútočíte(číslo): ";
-            cin >> nakoho;
+            do {
+                cout << "Na koho zaútočíte(číslo): ";
+                cin >> nakoho;
+            }while ((overVstup() == true)||(nakoho < 1 || nakoho > 3));
             while (((nakoho == 1) && (zivotyM1 <= 0)) || ((nakoho == 2) && (zivotyM2 <= 0)) || ((nakoho == 3) && (zivotyM3 <= 0))) {
                 cout << "\nTento nepřítel už je mrtvý.";
-                cout << "\nNa koho zaútočíte(číslo): ";
-                cin >> nakoho;
+                do {
+                    cout << "\nNa koho zaútočíte(číslo): ";
+                    cin >> nakoho;
+                }while ((overVstup() == true)||(nakoho < 1 || nakoho > 3));
             }
             cout << "Možnosti útoku";
             postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder, energie);
@@ -515,9 +548,19 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
 
 }
 
+
+
+
 int main() {
-    SetConsoleOutputCP(CP_UTF8);
+
     srand(time(NULL));
+    std::locale::global(std::locale(""));
+    std::cout.imbue(std::locale());
+
+    #if defined(_WIN32) || defined(_WIN64)
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    #endif
 
     const string RESET   = "\033[0m";
     const string RED     = "\033[31m";
@@ -547,7 +590,7 @@ int main() {
     do {
         vyberPostav();
         cin >> cislopostavy;
-        while (cislopostavy <= 0 || cislopostavy > 4){
+        while ((overVstup() == true)||(cislopostavy <= 0 || cislopostavy > 4)){
             cout << "\nNEPLATNÝ ÚDAJ\n";
             vyberPostav();
             cin >> cislopostavy;
@@ -568,7 +611,7 @@ int main() {
         do {
             cout << "\nChcete vybrat tuto postavu (a/n): ";
             cin  >> vyberanone;
-        }while ((vyberanone != 'a') && (vyberanone != 'n'));
+        }while ((overVstup() == true)||((vyberanone != 'a') && (vyberanone != 'n')));
 
     }while (vyberanone == 'n');
 
