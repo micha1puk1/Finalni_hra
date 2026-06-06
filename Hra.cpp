@@ -2,6 +2,8 @@
 #include <ctime>
 #include <locale>
 #include <limits>
+#include <chrono>
+#include <thread>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
@@ -42,7 +44,7 @@ void vyberPostav() {
     cout << "\nČíslo postavy: ";
 }
 
-void revizorInfo(int &zivoty, int &zivotymax, int &energie, int &energiemax, int &penize, int &velikostUtoku0, int velikostUtoku1) {
+void revizorInfo(int &zivoty, int &zivotymax, int &energie, int &energiemax, int &penize, int &velikostUtoku0, int &velikostUtoku1) {
     cout << "\nJeho rajón je metro, ale nevadí mu dávat pokuty ani ve vlaku!\n";
     zivoty = 30;
     zivotymax = 35;
@@ -50,7 +52,7 @@ void revizorInfo(int &zivoty, int &zivotymax, int &energie, int &energiemax, int
     energiemax = 18;
     penize = 95;
     velikostUtoku0 = 3;
-    velikostUtoku1 = 8;
+    velikostUtoku1 = 9;
 
     statistika(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku0,velikostUtoku1);
 
@@ -109,7 +111,7 @@ void ajtakInfo() {
 void ajtakSouboj() {
 
 }
-void postava(int cislopostavy, char moznost, int velikostUtoku0, int velikostUtoku1, int &uder,int &energie) {
+void postava(int cislopostavy, char moznost, int &velikostUtoku0, int &velikostUtoku1, int &uder,int &energie) {
     int uderP = 0;
     switch (cislopostavy) {
         case 1:
@@ -119,7 +121,7 @@ void postava(int cislopostavy, char moznost, int velikostUtoku0, int velikostUto
     uder = uderP;
 }
 
-void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int penize, int vagon, int velikostUtoku0, int velikostUtoku1) {
+void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int penize, int &vagon, int velikostUtoku0, int velikostUtoku1) {
 
     cout << "\n-----------------------";
     cout <<"\nVAGÓN " << vagon << " ÚSPĚŠNĚ ZDOLÁN";
@@ -129,6 +131,8 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
     cout << "\nJdete do dalšího vagónu(a): ";
     string odpoved;
     cin >> odpoved;
+    vagon--;
+    cout << "\n=============== VAGÓN " << vagon << " ===============\n";
 }
 
 void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &energiemax) {
@@ -315,7 +319,7 @@ void kapsarSouboj(int &uder, int &penize) {
     }
 }
 
-void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
+void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
     string MJmeno1;
     string MJmeno2;
     string MJmeno3;
@@ -395,7 +399,7 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
     }
 
     cout << "\n     Souboj"
-         << "\n----------------"
+         << "\n=================\n"
          << "\nVy versus " << MJmeno1;
     if (monstrum2 != 0) {
         cout << ", " << MJmeno2;
@@ -403,8 +407,8 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
     if (monstrum3 != 0) {
         cout << ", " << MJmeno3;
     }
-
-    cout << "\n\n" << MJmeno1 << "  Životy: " << zivotyM1;
+    cout << "\n\n--------------------------\n";
+    cout  << MJmeno1 << "  Životy: " << zivotyM1;
     if (monstrum2 != 0) {
         cout << "\n" << MJmeno2 << "  Životy: " << zivotyM2;
     }
@@ -414,45 +418,60 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
 
     int uder = 0;
 
+    cout << "\n--------------------------\n";
     while (zivoty > 0 && (zivotyM1 > 0 || zivotyM2 > 0 || zivotyM3 > 0)) {
         if (monstrum1 <= 3) {
-            cout << "\nHrajete Vy:";
-            cout << "\nVaše životy:     "<< zivoty;
+            cout << "\nJste na tahu:";
+            cout << "\n\nVaše životy:     "<< zivoty;
             cout << "\nVaše energie:    "<< energie;
             cout << "\nVaše peníze:     "<< penize;
 
 
             int nakoho;
-            cout << "\nJste na tahu";
-            cout << "\nNa koho zautočíte\n";
-            if (zivotyM1 > 0) {
-                cout << "1. " << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
-            } else {
-                cout << "1. " << MJmeno1 << "   Mrtvý\n";
-            }
-            if (zivotyM2 > 0) {
-                cout << "2. " << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
-            } else if (monstrum2 != 0) {
-                cout << "2. " << MJmeno2 << "   Mrtvý\n";
-            }
-            if (zivotyM3 > 0) {
-                cout << "3. " << MJmeno3 << "   Životy: " << zivotyM3 << "\n";
-            } else if (monstrum3 != 0) {
-                cout << "3. " << MJmeno3 << "   Mrtvý\n";
-            }
 
-            do {
-                cout << "Na koho zaútočíte(číslo): ";
-                cin >> nakoho;
-            }while ((overVstup() == true)||(nakoho < 1 || nakoho > 3));
-            while (((nakoho == 1) && (zivotyM1 <= 0)) || ((nakoho == 2) && (zivotyM2 <= 0)) || ((nakoho == 3) && (zivotyM3 <= 0))) {
-                cout << "\nTento nepřítel už je mrtvý.";
+            if ((monstrum2 == 0) && (monstrum3 == 0)) {
+                cout << "\n\nVáš nepřítel\n";
+                if (zivotyM1 > 0) {
+                    cout << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
+                } else {
+                    cout <<  MJmeno1 << "   Mrtvý\n";
+                }
+                nakoho = 1;
+                cout << "\nZaútočit...";
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+
+            } else {
+                cout << "\n\nVaši nepřátelé\n";
+                if (zivotyM1 > 0) {
+                    cout << "1. " << MJmeno1 << "   Životy: " << zivotyM1 << "\n";
+                } else {
+                    cout << "1. " << MJmeno1 << "   Mrtvý\n";
+                }
+                if (zivotyM2 > 0) {
+                    cout << "2. " << MJmeno2 << "   Životy: " << zivotyM2 << "\n";
+                } else if (monstrum2 != 0) {
+                    cout << "2. " << MJmeno2 << "   Mrtvý\n";
+                }
+                if (zivotyM3 > 0) {
+                    cout << "3. " << MJmeno3 << "   Životy: " << zivotyM3 << "\n";
+                } else if (monstrum3 != 0) {
+                    cout << "3. " << MJmeno3 << "   Mrtvý\n";
+                }
+
                 do {
-                    cout << "\nNa koho zaútočíte(číslo): ";
+                    cout << "Na koho zaútočíte(číslo): ";
                     cin >> nakoho;
                 }while ((overVstup() == true)||(nakoho < 1 || nakoho > 3));
+                while (((nakoho == 1) && (zivotyM1 <= 0)) || ((nakoho == 2) && (zivotyM2 <= 0)) || ((nakoho == 3) && (zivotyM3 <= 0))) {
+                    cout << "\nTento nepřítel už je mrtvý.";
+                    do {
+                        cout << "\nNa koho zaútočíte(číslo): ";
+                        cin >> nakoho;
+                    }while ((overVstup() == true)||(nakoho < 1 || nakoho > 3));
+                }
             }
-            cout << "Možnosti útoku";
+
             postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder, energie);
             switch (nakoho) {
                 case 1:
@@ -472,7 +491,10 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
             }
 
         }
-
+        this_thread::sleep_for(chrono::seconds(1));
+        if ((zivotyM1 > 0)||(zivotyM2 > 0)||(zivotyM3 > 0)) {
+            cout << "\n\n--------------------------";
+        }
         // tah monster
         if (zivotyM1 > 0) {
             cout << "\nNa tahu je " << MJmeno1;
@@ -488,8 +510,9 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
                     break;
             }
             zivoty -= uder;
-            cout << "\n- " << uder << " životů";
+            cout << "\nVy -" << uder << " životů";
             uder = 0;
+
         }
 
         if (zivotyM2 > 0) {
@@ -506,8 +529,9 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
                     break;
             }
             zivoty -= uder;
-            cout << "\n- " << uder << " životů";
+            cout << "\nVy -" << uder << " životů";
             uder = 0;
+
         }
 
         if (zivotyM3 > 0) {
@@ -524,12 +548,19 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
                     break;
             }
             zivoty -= uder;
-            cout << "\n- " << uder << " životů";
+            cout << "\nVy -" << uder << " životů";
             uder = 0;
+
         }
+        if ((zivotyM1 > 0)||(zivotyM2 > 0)||(zivotyM3 > 0)) {
+            cout << "\n--------------------------\n";
+        }
+        cout << "\nPokračovat...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     }
 
-    cout << "\n---------------------------";
+    cout << "\n================================";
     if (zivoty > 0) {
 
         if (monstrum1 != 0) {
@@ -580,14 +611,21 @@ void souboj(int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &ener
         }
 
         cout << "\nTento souboj jsi vyhrál!";
-        if (random(0,4) == 1) {
-             cout << "Tento souboj tě hodně naučil a zlepšil tvé dovednosti."
-                  << "+1 maximální život";
-            zivotymax++;
+        if (random(0,1) == 1) {
+             cout << "\nTento souboj tě hodně naučil a zlepšil tvé dovednosti."
+                  << "\n+2 maximální život";
+            zivotymax+=2;
+
+        }
+        if (random(0,1) == 1) {
+            cout << "\n\nCo tě nezabije, to tě posílí."
+                 << "\n+1 maximální energie";
+            energie++;
 
         }
     } else {
-        cout << "Tento souboj se ti nepodařil, nepřítel byl silnější než ty.";
+        cout << "\n\nTento souboj se ti nepodařil, nepřítel byl silnější než ty.";
+        zivoty=0;
     }
 
 }
@@ -672,15 +710,33 @@ int main() {
 
     }while (vyberanone == 'n');
 
-    cout << cislopostavy;
-    jidelniVagon(zivoty,penize,energie, zivotymax, energiemax);
-    souboj(zivotymax,penize,cislopostavy ,zivoty, energie,velikostUtoku[0],velikostUtoku[1], 3,1,2);
+    cout << "\nVaše postava: " << postava[cislopostavy-1];
 
-    if (zivoty > 0) {
+    cout << "\nAktuálně se nacházíte ve vagónu: " << vagon;
+    cout << "\n\nV každém vagónu se mužou nacházet vaši nepřátelé.\n"
+         << "Zrovna teď se před vámi objevil váš nepřítel. Váš úkol je ho teď zneškodnit.\n";
+    cout << "Zneškodnit nepřítele...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],2,0,0);
+
+
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+
         statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+
+
         jidelniVagon(zivoty,penize,energie, zivotymax, energiemax);
         statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
-    }
+
+
+
     cout << "\nKonec";
 
 }
