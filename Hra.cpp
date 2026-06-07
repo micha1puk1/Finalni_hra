@@ -138,10 +138,17 @@ void bezdomovecSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &en
     }
     switch (vyber) {
         case 1:
-            uderP = random(velikostUtoku0+2,velikostUtoku1+3);
+            if (protiBezdomovec == false) {
+                uderP = random(velikostUtoku0,velikostUtoku1);
+
+            }else{
+                uderP = random(velikostUtoku0+2,velikostUtoku1+3);
+
+            }
+
             break;
         case 2:
-            uderP = velikostUtoku1 + velikostUtoku0;
+            uderP = velikostUtoku0+velikostUtoku1;
             energie-= 6;
             break;
         case 3:
@@ -152,6 +159,7 @@ void bezdomovecSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &en
 
 void cernypasazerInfo(int &zivoty, int &zivotymax, int &energie, int &energiemax, int &penize, int &velikostUtoku0, int &velikostUtoku1) {
     cout << "\nJeho úspory na jízdném jsou tak velké, že si může dovolit vykoupit celý jídelní vůz!\n";
+    /*
     zivoty = 20;
     zivotymax = 32;
     energie = 18;
@@ -159,6 +167,14 @@ void cernypasazerInfo(int &zivoty, int &zivotymax, int &energie, int &energiemax
     penize = 400;
     velikostUtoku0 = 5;
     velikostUtoku1 = 7;
+*/
+    zivoty = 200;
+    zivotymax = 500;
+    energie = 200;
+    energiemax = 300;
+    penize = 400;
+    velikostUtoku0 = 30;
+    velikostUtoku1 = 32;
 
     statistika(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku0,velikostUtoku1);
 
@@ -215,10 +231,13 @@ void postava(int cislopostavy, char moznost, int &velikostUtoku0, int &velikostU
     switch (cislopostavy) {
         case 1:
             revizorSouboj(velikostUtoku0, velikostUtoku1, uderP, energie);
+            break;
         case 2:
             bezdomovecSouboj(velikostUtoku0, velikostUtoku1, uderP, energie,protiBezdomovec);
+            break;
         case 3:
             cernypasazerSouboj(velikostUtoku0, velikostUtoku1, uderP, energie);
+            break;
 
     }
 
@@ -232,11 +251,10 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
     cout << "\n-----------------------";
 
     statistika(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku0,velikostUtoku1);
-    cout << "\nJdete do dalšího vagónu(a): ";
-    string odpoved;
-    cin >> odpoved;
+    cout << "\nJít do dalšího vagónu...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     vagon--;
-    cout << "\n=============== VAGÓN " << vagon << " ===============\n";
+    cout << "\n=================== VAGÓN " << vagon << " ===================\n";
 }
 
 void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &energiemax, int &velikostUtoku0, int &velikostUtoku1) {
@@ -411,7 +429,7 @@ void MBezdomovecInfo(int &zivotyM, string &MJmeno) {
 
 void MBezdomovecSouboj(int &uder) {
     cout << "\nZabiju tě";
-    uder = random(1,10);
+    uder = random(1,8);
 }
 void krysaInfo(int &zivotyM, string &MJmeno) {
     zivotyM = 13;
@@ -436,10 +454,30 @@ void kapsarSouboj(int &uder, int &penize) {
         while (kradez > penize) {
             kradez--;
         }
-        cout << "\n-" << kradez << " peněz";
+        cout << "\nVy -" << kradez << " peněz";
         penize -= kradez;
     }
 }
+
+void mBoss1Info(int &zivotyM1, string  &MJmeno1) {
+    zivotyM1 = 30;
+    MJmeno1 = "Terorista s bombou";
+
+}
+
+void mBoss1Souboj(int &uder, int &pocetTahu, bool &konec) {
+    cout << "\nBomba vybouchne za " << 5 - pocetTahu;
+    uder = 1;
+    konec = false;
+    if (pocetTahu >= 5) {
+        cout << "\nBOOOOOOOM!";
+        cout << "\nBomba roztrhala celý vlak...";
+        konec = true;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
+}
+
+
 
 void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &zivoty,int &energie, int velikostUtoku0,int velikostUtoku1, int monstrum1, int monstrum2 = 0, int monstrum3 = 0) {
     string MJmeno1;
@@ -454,6 +492,8 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
     int pocetK = 0;
     int pocetKsr = 0;
     bool protiBezdomovec = false;
+    bool konec = false;
+
 
     if (monstrum1 == 1) {pocetB++;}else if (monstrum1 == 2) {pocetK++;}else if (monstrum1 == 3) {pocetKsr++;}
     if (monstrum2 == 1) {pocetB++;}else if (monstrum2 == 2) {pocetK++;}else if (monstrum2 == 3) {pocetKsr++;}
@@ -479,7 +519,11 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
                 MJmeno1 += " 1";
             }
             break;
+        case 4:
+            mBoss1Info(zivotyM1, MJmeno1);
+
     }
+
     switch (monstrum2) {
         case 1:
             MBezdomovecInfo(zivotyM2, MJmeno2);
@@ -499,6 +543,7 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
                 MJmeno2 += " 2";
             }
             break;
+
     }
     switch (monstrum3) {
         case 1:
@@ -542,8 +587,11 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
     int uder = 0;
 
     cout << "\n--------------------------\n";
+
+
     while (zivoty > 0 && (zivotyM1 > 0 || zivotyM2 > 0 || zivotyM3 > 0)) {
-        if (monstrum1 <= 3) {
+        tah++;
+        if ((monstrum1 <= 3) || ((monstrum1 > 3) && (tah != 1))) {
             cout << "\nJste na tahu:";
             cout << "\n\nVaše životy:     "<< zivoty;
             cout << "\nVaše energie:    "<< energie;
@@ -637,10 +685,17 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
                 case 3:
                     kapsarSouboj(uder, penize);
                     break;
+                case 4:
+                    mBoss1Souboj(uder, tah,konec);
             }
-            zivoty -= uder;
-            cout << "\nVy -" << uder << " životů";
-            uder = 0;
+            if (konec != true) {
+                zivoty -= uder;
+                cout << "\nVy -" << uder << " životů";
+                uder = 0;
+            } else {
+                zivoty = 0;
+
+            }
 
         }
 
@@ -753,7 +808,7 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
 
         }
     } else {
-        cout << "\n\nTento souboj se ti nepodařil, nepřítel byl silnější než ty.";
+        cout << "\n\nTento souboj se ti nepodařil, nepřítel byl silnější než ty.\n";
         zivoty=0;
     }
 
@@ -788,7 +843,7 @@ int main() {
     int velikostUtoku[2];
     int uder;
 
-    cout << "\n================================ MISE: SOUPRAVA ================================\n";
+    cout << "\n================================== MISE: SOUPRAVA ==================================\n";
     cout << "\nNastoupíte do vlaku, protože jste si koupil místenku jdete ke svému sedadlu.\n"
          << "Na vašem sedadle leží dopis.\n"
          << "Přečíst dopis... ";
@@ -847,10 +902,8 @@ int main() {
     cout << "Zneškodnit nepřítele...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    
+
     souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],2,0,0);
-
-
     if (zivoty <= 0) {
         cout << "\n\nDosažený Vagón:  " << vagon << endl;
         statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
@@ -859,11 +912,126 @@ int main() {
         return 0;
     }
 
-        statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    cout << "\n\nGratuluji Porazil jste prvního nepřítele.";
+    cout << "\nTeď mužete jít do dalšího vagónu!\n";
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    cout << "\nV tomto vagónu se nemusíš bát nepřátel.\n"
+         << "Je to totiž jídelní vůz!\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    jidelniVagon(zivoty,penize,energie, zivotymax, energiemax, velikostUtoku[0],velikostUtoku[1]);
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+
+    cout << "\nPo odpočinku v jídelním voze musíš jít dál bojovat.\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],1,0,0);
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    cout << "\nPozor kapsář, muže vás i okrást!\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],3,0,0);
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    cout << "\nAle né! Jsou tu dvě krysy najednou, musíš je zneškodnit.\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],2,2,0);
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    cout << "\nDoporučuji se teď dobře připravit na další souboje.\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    jidelniVagon(zivoty,penize,energie, zivotymax, energiemax, velikostUtoku[0],velikostUtoku[1]);
 
 
-        jidelniVagon(zivoty,penize,energie, zivotymax, energiemax, velikostUtoku[0],velikostUtoku[1]);
-        statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+
+    cout << "\nDalší souboj nebude jednoduchý, protože budeš muset bojovat proti teroristovi s bombou.\n"
+         << "Když ho do čtyř kol nezabiješ, tak jeho bomba vybouchne a zničí celý vlak.\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],4,0,0);
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+
+
+
+    cout << "\n\nTak toto bylo napínavé.\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],2,1,3);
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    jidelniVagon(zivoty,penize,energie, zivotymax, energiemax, velikostUtoku[0],velikostUtoku[1]);
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+
+    cout << "\nHele, našel jsi na zemi peníze"
+         << "\n+ 100 peněz\n";
+    cout <<"Pokračovat...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    penize+=100;
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],3,3,0);
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],2,2,1);
+    if (zivoty <= 0) {
+        cout << "\n\nDosažený Vagón:  " << vagon << endl;
+        statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
+        cout << "\n\nKonec...";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return 0;
+    }
+    statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
+//vagon 4
+
+
+
+
+
+
+
 
 
 
