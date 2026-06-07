@@ -93,29 +93,133 @@ void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &energ
 
             }
 }
-void bezdomovecInfo() {
-    cout << "Popis postavy Bezdomovec";
-}
-void bezdomovecSouboj() {
+
+void bezdomovecInfo(int &zivoty, int &zivotymax, int &energie, int &energiemax, int &penize, int &velikostUtoku0, int &velikostUtoku1) {
+    cout << "\nSílu mu dodá jeho krabičák co nosí u sebe."
+         << "\nMá zkušenosti z pouličních rvaček a ví jak jednoduše zmlátit ostatní bezdomovce.";
+    zivoty = 17;
+    zivotymax = 30;
+    energie = 9;
+    energiemax = 20;
+    penize = 60;
+    velikostUtoku0 = 4;
+    velikostUtoku1 = 9;
+
+    statistika(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku0,velikostUtoku1);
 
 }
-void cernypasazerInfo() {
-    cout << "Popis postavy Černý pasažér";
+
+void bezdomovecSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &energie, bool &protiBezdomovec) {
+    int vyber;
+
+    cout << "\n   MMOŽNOST                                      CENA         ÚDER";
+    if (protiBezdomovec == false) {
+        cout << "\n1. Úder                                                       " << velikostUtoku0 << " - " << velikostUtoku1;
+    }else {
+        cout << "\n1. Úder - proti bezdomovci                                    " << velikostUtoku0 << "+2 - " << velikostUtoku1 << "+3";
+    }
+    cout << "\n2. Napít se krabičáku                            6 Energie    " << velikostUtoku0+velikostUtoku1;
+    cout << "\n3. Nedělat nic";
+    do {
+        cout << "\nVyberte akci(číslo): ";
+        cin >> vyber;
+    }while ((overVstup()==true)||(vyber < 1 || vyber > 3));
+
+    while ((vyber > 3 || vyber < 1) || ((vyber == 2) && (energie < 6))) {
+        if ((vyber == 2) && (energie < 6)) {
+            cout << "Máš málo energie na tuto možnost";
+        } else {
+            cout << "Špatně zadané číslo";
+        }
+        do {
+            cout << "\nVyberte jinou akci(číslo): ";
+            cin >> vyber;
+        }while ((overVstup()==true)||(vyber < 1 || vyber > 3));
+    }
+    switch (vyber) {
+        case 1:
+            uderP = random(velikostUtoku0+2,velikostUtoku1+3);
+            break;
+        case 2:
+            uderP = velikostUtoku1 + velikostUtoku0;
+            energie-= 6;
+            break;
+        case 3:
+            break;
+
+    }
 }
-void cernypasazerSouboj() {
+
+void cernypasazerInfo(int &zivoty, int &zivotymax, int &energie, int &energiemax, int &penize, int &velikostUtoku0, int &velikostUtoku1) {
+    cout << "\nJeho úspory na jízdném jsou tak velké, že si může dovolit vykoupit celý jídelní vůz!\n";
+    zivoty = 20;
+    zivotymax = 32;
+    energie = 18;
+    energiemax = 30;
+    penize = 400;
+    velikostUtoku0 = 5;
+    velikostUtoku1 = 7;
+
+    statistika(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku0,velikostUtoku1);
 
 }
+
+void cernypasazerSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &energie) {
+    int vyber;
+
+    cout << "\n   MMOŽNOST                                      CENA         ÚDER";
+    cout << "\n1. Úder                                                       " << velikostUtoku0 << " - " << velikostUtoku1;
+    cout << "\n2. Podrazit nohy                                 6 Energie    " << velikostUtoku1+1;
+    cout << "\n3. Nedělat nic";
+    do {
+        cout << "\nVyberte akci(číslo): ";
+        cin >> vyber;
+    }while ((overVstup()==true)||(vyber < 1 || vyber > 3));
+
+    while ((vyber > 3 || vyber < 1) || ((vyber == 2) && (energie < 6))) {
+        if ((vyber == 2) && (energie < 6)) {
+            cout << "Máš málo energie na tuto možnost";
+        } else {
+            cout << "Špatně zadané číslo";
+        }
+        do {
+            cout << "\nVyberte jinou akci(číslo): ";
+            cin >> vyber;
+        }while ((overVstup()==true)||(vyber < 1 || vyber > 3));
+    }
+    switch (vyber) {
+        case 1:
+            uderP = random(velikostUtoku0,velikostUtoku1);
+            break;
+        case 2:
+            uderP = velikostUtoku1 +1;
+            energie-= 6;
+            break;
+        case 3:
+            break;
+
+    }
+}
+
+
+
+
 void ajtakInfo() {
     cout << "Popis postavy Ajťák";
 }
 void ajtakSouboj() {
 
 }
-void postava(int cislopostavy, char moznost, int &velikostUtoku0, int &velikostUtoku1, int &uder,int &energie) {
+void postava(int cislopostavy, char moznost, int &velikostUtoku0, int &velikostUtoku1, int &uder,int &energie, bool &protiBezdomovec) {
     int uderP = 0;
     switch (cislopostavy) {
         case 1:
             revizorSouboj(velikostUtoku0, velikostUtoku1, uderP, energie);
+        case 2:
+            bezdomovecSouboj(velikostUtoku0, velikostUtoku1, uderP, energie,protiBezdomovec);
+        case 3:
+            cernypasazerSouboj(velikostUtoku0, velikostUtoku1, uderP, energie);
+
     }
 
     uder = uderP;
@@ -135,7 +239,7 @@ void statistikaVagon(int zivoty, int zivotymax, int energie, int energiemax, int
     cout << "\n=============== VAGÓN " << vagon << " ===============\n";
 }
 
-void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &energiemax) {
+void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &energiemax, int &velikostUtoku0, int &velikostUtoku1) {
     char vyberanone;
     int vybernakupu;
     int pocitadloSymboly[3] = {0,0,0};
@@ -163,6 +267,12 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &e
             cout << " - Není dostupné";
         }
 
+        cout << "\n4. Řízek s kaší             +1 síla uderu          55 Peněz";
+        if (penize < 45) {
+            cout << " - Není dostupné";
+        }
+
+
         if (penize < 45) {
             cout << "\nStav vašeho účtu je velmi špatný - Nemáte na nic peníze";
         }
@@ -174,9 +284,9 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &e
         switch (vyberanone) {
             case 'a':
                 do {
-                    cout << "\nCo si koupíte(1-3): ";
+                    cout << "\nCo si koupíte(1-4): ";
                     cin >> vybernakupu;
-                }while ((overVstup() == true)||((vybernakupu < 1) || (vybernakupu > 3)));
+                }while ((overVstup() == true)||((vybernakupu < 1) || (vybernakupu > 4)));
                 switch (vybernakupu) {
                     case 1:
                         if ((penize >= 65) && (zivoty + 10 <= zivotymax)) {
@@ -273,17 +383,29 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &e
                         } else {
                             cout << "\nMate nedostatek peněz";
                         }
-
+                        break;
+                    case 4:
+                        if (penize >= 55) {
+                            cout << "-55 peněz";
+                            cout << "\nPosilnění vaší síly.";
+                            velikostUtoku0 += 1;
+                            velikostUtoku1 += 1;
+                            cout << "\n+1 minimální úder";
+                            cout << "\n+1 maximální úder";
+                            penize-= 55;
+                        } else {
+                            cout << "\nMate nedostatek peněz";
+                        }
                 }
                 do {
-                    cout << "\nChcete ještě nakoupit(a/n): "; cin >> vyberanone;
+                    cout << "\n\nChcete ještě nakoupit(a/n): "; cin >> vyberanone;
                 }while ((overVstup() == true)||((vyberanone != 'n')&&(vyberanone != 'a')));
         }
     }while (vyberanone == 'a');
 }
 
 void MBezdomovecInfo(int &zivotyM, string &MJmeno) {
-    zivotyM = 10;
+    zivotyM = 20;
     MJmeno = "Bezdomovec";
 }
 
@@ -331,6 +453,7 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
     int pocetB = 0;
     int pocetK = 0;
     int pocetKsr = 0;
+    bool protiBezdomovec = false;
 
     if (monstrum1 == 1) {pocetB++;}else if (monstrum1 == 2) {pocetK++;}else if (monstrum1 == 3) {pocetKsr++;}
     if (monstrum2 == 1) {pocetB++;}else if (monstrum2 == 2) {pocetK++;}else if (monstrum2 == 3) {pocetKsr++;}
@@ -472,7 +595,13 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
                 }
             }
 
-            postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder, energie);
+            protiBezdomovec = false;
+            if (((nakoho == 1)&&(monstrum1 == 1)) || ((nakoho == 2)&&(monstrum2 == 1)) || ((nakoho == 3)&&(monstrum3 == 1))) {
+                protiBezdomovec = true;
+
+            }
+
+            postava(cislopostavy,'s', velikostUtoku0, velikostUtoku1,uder, energie, protiBezdomovec);
             switch (nakoho) {
                 case 1:
                     zivotyM1 -= uder;
@@ -620,7 +749,7 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
         if (random(0,1) == 1) {
             cout << "\n\nCo tě nezabije, to tě posílí."
                  << "\n+1 maximální energie";
-            energie++;
+            energiemax++;
 
         }
     } else {
@@ -659,7 +788,7 @@ int main() {
     int velikostUtoku[2];
     int uder;
 
-    cout << "\n==== MISE: SOUPRAVA ====\n";
+    cout << "\n================================ MISE: SOUPRAVA ================================\n";
     cout << "\nNastoupíte do vlaku, protože jste si koupil místenku jdete ke svému sedadlu.\n"
          << "Na vašem sedadle leží dopis.\n"
          << "Přečíst dopis... ";
@@ -697,8 +826,8 @@ int main() {
             case 1: revizorInfo(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku[0],velikostUtoku[1]);
 
                 break;
-            case 2: bezdomovecInfo(); break;
-            case 3: cernypasazerInfo(); break;
+            case 2: bezdomovecInfo(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku[0],velikostUtoku[1]); break;
+            case 3: cernypasazerInfo(zivoty,zivotymax,energie,energiemax,penize,velikostUtoku[0],velikostUtoku[1]); break;
             case 4: ajtakInfo(); break;
             default: cout << "ERROR";
         }
@@ -718,6 +847,7 @@ int main() {
     cout << "Zneškodnit nepřítele...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+    
     souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],2,0,0);
 
 
@@ -732,7 +862,7 @@ int main() {
         statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
 
 
-        jidelniVagon(zivoty,penize,energie, zivotymax, energiemax);
+        jidelniVagon(zivoty,penize,energie, zivotymax, energiemax, velikostUtoku[0],velikostUtoku[1]);
         statistikaVagon(zivoty, zivotymax, energie, energiemax, penize, vagon,velikostUtoku[0],velikostUtoku[1]);
 
 
