@@ -4,7 +4,6 @@
 #include <limits>
 #include <chrono>
 #include <thread>
-
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
 #endif
@@ -892,6 +891,7 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
 int main() {
 
     srand(time(NULL));
+
     std::locale::global(std::locale(""));
     std::cout.imbue(std::locale());
 
@@ -1062,7 +1062,9 @@ int main() {
         cout << "\n\nDosažený Vagón:  " << vagon << endl;
         statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
         cout << "\n\nKonec...";
+
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         return 0;
     }
 
@@ -1127,7 +1129,7 @@ int main() {
     }
     cout <<"Pokračovat...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],1,1,0);
+    souboj(energiemax,zivotymax,penize ,cislopostavy, zivoty,energie,velikostUtoku[0], velikostUtoku[1],1,1,3);
     if (zivoty <= 0) {
         cout << "\n\nDosažený Vagón:  " << vagon << endl;
         statistika(zivoty,zivotymax,energie,energiemax,penize, velikostUtoku[0],velikostUtoku[1]);
@@ -1303,3 +1305,7 @@ cout << "\n\nUkončit program...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 }
+
+
+
+
