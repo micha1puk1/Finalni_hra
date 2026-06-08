@@ -61,7 +61,7 @@ void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &energ
 
             cout << "\n   MMOŽNOST                                      CENA         ÚDER";
             cout << "\n1. Úder                                                       " << velikostUtoku0 << " - " << velikostUtoku1;
-            cout << "\n2. Udělit pokutu za nevhodné chování ve voze     5 Energie    " << velikostUtoku1 - 1;
+            cout << "\n2. Udělit pokutu za nevhodné chování ve voze     5 Energie    " << velikostUtoku1+2;
             cout << "\n3. Nedělat nic";
             do {
             cout << "\nVyberte akci(číslo): ";
@@ -85,7 +85,7 @@ void revizorSouboj(int velikostUtoku0,int velikostUtoku1, int &uderP, int &energ
                     break;
                 case 2:
                     pocetSchopnosti++;
-                    uderP = velikostUtoku1 -1;
+                    uderP = velikostUtoku1+2;
                     energie-= 5;
                     break;
                 case 3:
@@ -340,7 +340,7 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &e
                                 energie = energiemax;
                             }else {
                                 energie+= 6;
-                                cout << "+6 energie";
+                                cout << "\n+6 energie";
                             }
 
                             penize-= 25;
@@ -514,10 +514,10 @@ void bossSouboj(int &uder, int &tah, int &pocetShopnosti) {
 
         if (pocetShopnosti >= 2) {
             cout <<"\nTohle je odplata za to, že používáš své schopnosti!";
-            uder = random(38*1.5,42*1.5);
+            uder = random(20*1.5,24*1.5);
         }else {
             cout <<"\nDostaneš flákanec!";
-            uder = random(38,42);
+            uder = random(20,24);
         }
 
         pocetShopnosti = 0;
@@ -825,8 +825,8 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
             } else {
                 cout << endl << MJmeno1 << "   Mrtvý\n";
                 cout << "Prohledávání... ";
-                if (random(0,1) == 1) {
-                    int nalez = random(10,36);
+                if (random(0,2) >0) {
+                    int nalez = random(10,42);
                     cout << "\n+ " << nalez <<" Peněz" << endl;
                     penize += nalez;
                 }else {
@@ -841,8 +841,8 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
             } else if (monstrum2 != 0) {
                 cout << MJmeno2 << "   Mrtvý\n";
                 cout << "Prohledávání... ";
-                if (random(0,1) == 1) {
-                    int nalez = random(10,36);
+                if (random(0,2) >0) {
+                    int nalez = random(10,42);
                     cout << "\n+ " << nalez <<" Peněz" << endl;
                     penize += nalez;
                 }else {
@@ -856,8 +856,8 @@ void souboj(int &energiemax,int &zivotymax ,int &penize, int cislopostavy, int &
             } else if (monstrum3 != 0) {
                 cout << MJmeno3 << "   Mrtvý\n";
                 cout << "Prohledávání... ";
-                if (random(0,1) == 1) {
-                    int nalez = random(10,36);
+                if (random(0,2) >0) {
+                    int nalez = random(10,42);
                     cout << "\n+ " << nalez <<" Peněz" << endl;
                     penize += nalez;
                 }else {
