@@ -359,14 +359,17 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &e
                                 pocitadloSymboly[i] = 0;
                             }
                             cout << "-45 peněz";
+                            penize -=45;
                             cout << "\n\nMINISTERSTVO FINANCÍ VARUJE: Účastí na hazardní hře může vzniknout závislost.";
-                            cout << "\n\n#   #   #           20 penez";
+                            cout << "\n\nVýhry:";
+                            cout << "\n#   #   #           20 penez";
                             cout <<   "\n2x  *               40 penez";
                             cout <<   "\n*   *   *           80 penez";
                             cout <<   "\n2x  $              200 penez";
                             cout <<   "\n$   $   $    1 000 000 penez";
-                            cout << "\n\nSetřít los?(a): ";
-                            cin >> vyberanone;
+                            cout << "\n\nSetřít los...";
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
                             cout << "\n=========\n";
                             for (int i = 0; i < 3; i++) {
                                 random = rand() % 100;
@@ -382,6 +385,7 @@ void jidelniVagon(int &zivoty, int &penize, int &energie, int &zivotymax, int &e
                                 }
                             }
                             cout << "\n=========\n";
+                            this_thread::sleep_for(chrono::seconds(3));
 
                             if (pocitadloSymboly[0] == 3) {
                                 cout << "\nVýhra";
