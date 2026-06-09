@@ -503,7 +503,7 @@ void mBoss2Souboj(int &uder) {
 }
 
 void bossInfo(int &zivotyM1, string  &MJmeno1) {
-    zivotyM1 = 45;
+    zivotyM1 = 55;
     MJmeno1 = "Strojvedoucí";
 }
 
